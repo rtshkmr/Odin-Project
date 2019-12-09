@@ -82,4 +82,148 @@ Mon Dec  9 18:48:45 +08 2019
   FUNCTIONS (JavaScript). 
 - your browser handles figuring out how to make these files into a functioning
   web page (not the server).
+
+- front end dev roles:
+    - convert designers' work to code
+    - handle the user interactions (UI elements)
+    - strong understanding of accessibility and things 
+      like responsive development down the line
+
+
+
   
+
+HTML:
+------------
+- browser's role is to make a request for the html file from some url and
+  then display that html
+- only defines the semantic structure of a document, no info about the visual representation
+
+- there is a purpose to discretely defining the semantic structure:
+    --> can let other code do the appearance, interesting things like 
+        theme is possible over the same content
+    --> search engines use this by figuring out how a particular webpage is referenced
+        by other webpages
+    --> can automate some things like creating a contents table
+
+- one could say that the primary purpose of web applications is to produce HTML
+  so it can be sent to web browsers.
+
+
+
+ERB: embedded ruby: ruby lib to dynamically generate HTML data
+---------------------------------------------------------------
+- embed some Ruby code into an HTML document(aka template).\
+- keywords:
+    - binding
+    - ruby kernel method
+
+
+Dealing w Files: how everything ties up to form a webpage:
+--------------------------------------------------------------
+- filenaming: 
+    - all lowercase, separate w hyphen rather than underscore 
+    --> because Google search engine treats hyphen as a word separator and not underscore
+
+- common structure:
+    . index.html 
+    . images folder
+    . styles folder
+    . scripts folder
+
+
+- for communicating b/w files, provide a filepath.It's like a relative
+  path you provide to the index.html file. Similar to shell paths when
+  navigating dirs. NB: on windows, use / instead of \ (follow bash)
+
+HTML:
+----------
+
+- elements and attribute tags: can use attribute tags and their respective attribute 
+  values to identify the element for style info and other reasons.
+
+- elements can be nested but not overlapped
+
+- empty elements exist (e.g. images) that have no other content. This works
+  because an image element doesn't wrap content to affect it. Its purpose is
+  to embed an image in the HTML page in the place it appears.
+
+- after the doctype, the <html> </html> tags refer to an element that is also called
+  the root element.
+
+- the head element contains metadata:
+    . keywords
+    . page description
+    . CCS and charset declaration...
+
+- just set charset as utf-8
+
+- purpose of the alt attribute:
+    if the source attribute's value is incorrect then the value of the
+    alt attribute will be displayed, indicating an error in the source
+    attribute's value. keep the alt attribute descriptive for debugging.
+
+- links and href attribute, rmb to indicate the protocol used (https://)
+    href: hypertext reference
+
+
+CSS:
+-----------
+
+- to the index.html file, you're going to put the path to the css file within
+  the head element.
+
+- CSS ruleset (rule for short) structure: 
+    . selector
+    . declaration: property & property value make up the declaration
+
+    the property you want to style has to be a valid property of the 
+    selected element
+
+    syntax:
+    > ruleset wrapped around with {}
+    > each declaration, property : property value. Note the colon
+    > declarations separated by ; 
+
+- can have multiple selectors for the same ruleset. element types are 
+  therefore comma separated.
+
+- selectors:
+    - element/tag/type selector
+    - ID selector
+    - Class selector
+    - attribute selector
+    - pseudo class selector
+
+
+- fonts:
+    . need to link the font file link in the header of the index.html
+
+- keep the boxes analogy in mind!:
+    . padding
+    . border
+    . margin 
+
+
+- if your element is unstyled, then the browser might add some 
+  default styling to the element. In which case, you can and might 
+  want to ovrride the browser defaults!
+
+
+
+
+
+
+JavaScript:
+--------------------
+
+- same with the css elements, your js file are referenced in index.html near the 
+  end of whichever element the script applies to (?) with the element tag of script
+
+- good practice to put the js near the bottom of the HTML page. 
+
+- 
+
+
+
+
