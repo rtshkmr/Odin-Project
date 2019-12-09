@@ -1,0 +1,85 @@
+BASIC SETUP:
+Mon Dec  9 11:15:07 +08 2019
+========================================
+
+- syncing github:
+    - install binaries on local machine
+    - generate ssh key, pwd protected and stored on local host
+    - sync via browser to github account
+
+
+- testing first rails app
+    - error: can't create on a mounted drive that syncs w rsync, so 
+             use a local dir instead. Everything works well
+    - pushing commit to github
+
+- setting up Heroku account:
+    - after installing, 
+    - add public keys on local host to Heroku
+    - create a Heroku app
+        = prep rails for Heroku Deployment = 
+
+    - migrate to Heroku
+    - start and play around w template webapp :)
+
+
+
+
+
+
+LEARNING ABOUT GIT: 
+Mon Dec  9 15:15:20 +08 2019
+========================================
+
+
+git learning resources: 
+    - cheat sheet: https://education.github.com/git-cheat-sheet-education.pdf
+    - https://www.youtube.com/watch?v=HVsySz-h9r4 CLI basics
+    - https://git-scm.com/book/en/v2/
+    - https://www.git-tower.com/learn/git/ebook/en/command-line/basics/basic-workflow#start
+
+
+- remember to pull first before pushing code when you want to make a commit
+
+
+- common worflow: 
+    1) create a branch, name it appropriately.
+    2) checkout and work on it
+    3) push from local to remote repository
+
+
+    merging:
+    - checkout master and then pull it in case any new changes made onto master
+    - then check merged branches
+    - then merge the ready branch
+    - then push the changes onto the (remote) master
+    - delete that local branch and check all branches
+    
+
+- gitignore templates [todo]
+    https://github.com/github/gitignore
+
+
+
+
+
+NB: there are two repos: 
+    - local repository: in the .git folder of the root dir of your project 
+    - remote repository: on the remote server on internet/local network
+Origin is the placeholder name for the URL of the remote repository. Can use Originto access 
+the remote repository without having to enter a full URL each time. Hence, we canhave multiple remotes
+for a repository by giving each a unique name
+
+
+
+
+
+
+FRONT END BASICS:
+Mon Dec  9 18:48:45 +08 2019
+========================================
+- how the web page is STRUCTURED (HTML), how it LOOKS (CSS), and how it
+  FUNCTIONS (JavaScript). 
+- your browser handles figuring out how to make these files into a functioning
+  web page (not the server).
+  
