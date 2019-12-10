@@ -1,0 +1,58 @@
+
+body{
+    text-align: justify;
+    font-family: Impact, Helvetica, sans-serif;
+    font-size : 20px; 
+    /* background-image: url(images/dog.gif); */
+    /* background-size: fill; */
+
+    background-color: rgb(128, 0, 0);
+}
+
+h1{
+   
+
+    display: block;
+    text-align: center;
+    color: gold;
+    background-color: black;
+    font-size: 4em;
+}
+h1 #topBar{
+    position: fixed;
+    display: block;
+    text-align: center;
+    color: gold;
+    background-color: black;
+    font-size: 4em;
+}
+h1:hover {
+    text-align: center;
+    color: black;
+    background-color: gold;
+    font-size: 4em;
+}
+
+h2 {
+    text-align: center;
+    color: gold;
+    background-color: black;
+    font-size: 2em;
+    margin: 20px;
+    padding: 40px;
+    border-style: dashed;
+    border-width: 3px;
+    border-left-width: 10px;
+    border-right-width: 10px;
+    border-color: red;
+
+}
+
+
+
+ul{
+    text-align: justify;
+}
+video{
+    text-align: center;
+}
