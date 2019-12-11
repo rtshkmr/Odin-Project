@@ -287,3 +287,88 @@ console.log(eval(s2)); // returns the string "2 + 2"
 - [good use cases for switch statements](https://www.digitalocean.com/community/tutorials/how-to-use-the-switch-statement-in-javascript)
 
 - you can put one case statement for multiple cases!
+
+## JS Functions
+
+- [updated info on Functions, useful to check on default params](https://www.theodinproject.com/courses/web-development-101/lessons/fundamentals-part-3?ref=lnav)
+
+- some built-in functions written in low-level languages like C++, not web languages like Js
+
+- some are defined as part of browser APIs
+
+- function vs method
+
+  - methods are functions that are part of objects.
+
+- anonymous functions: [just stick to the usual way of creating fn]
+
+  - **_generally used along with an event handler_** , e.g.:
+
+  ```javascript
+  const myButton = document.querySelector("button");
+  myButton.onclick = function() {
+    //event handler
+    alert("hello");
+  };
+  ```
+
+  - can assign anonymous as values of a variable.
+
+- parameters:
+
+  - aka arguments/properties/attributes (losely)
+  - values passed into function calls are copied to its local variables
+  - params: items listed in function declaration, a _placeholder_
+  - argument: actual values passed in (for a function call)
+  - **function arguments**, when variables are your input params. Any change to the function argument will not change variable in the outer scope! Passing in these arguments creates a local copy within the calling function's scope.
+  - if a param is omitted, then its default value is `undefined`.
+    We can control the default by doing something like this (new Js feature):
+
+    ```javascript
+    function showMessage(from, text = "no text given") {
+      alert(from + ": " + text);
+    }
+
+    showMessage("Ann"); // Ann: no text given
+    ```
+
+    google it to see how to control thedefault param in the old style (just does an input check for undefined)
+
+- **_you'll end up curating your own favourite functions library for the various languages!_**
+
+### Function Scope and Conflicts {CS1101S Environment Model}
+
+- relevant consideration when you're importing script files from diff
+  places, you don't want them to have the same scope or else one would override the other for name-conflicts
+
+- `ReferenceError: variable name is not defined`: usually due to function call is done in a scope that is not in the same as the name's scope
+
+- good practice to _minimise the use of global variables in your code_ use it to store **project-level data** instead
+
+### Function Return Values
+
+- `return` without any following expresssion is legal. Just returns `undefined instead`
+
+- `return` keyword and it's value has to be **inline**, can wrap it up with round bracket for better legibility of long lines.
+
+### Naming
+
+- stick to descriptive verbs that describe the purpose of the function: prefix examples:
+  - get
+  - calc
+  - create
+  - check
+- one function one action, don't do more than one thing within a function
+
+### JS labelling (wow)
+
+### Lambda/Arrow Functions [same as CS1101S]
+
+- multiline arrow functions: just use a curly brace, followed by a `;`
+- don't have `this` method
+
+- arrow functions can't be used as constructors, they can't be called with `new` to create new object instances of themselves.
+
+- arrow functions have no "arguments"
+
+- no `super` kiv for later
