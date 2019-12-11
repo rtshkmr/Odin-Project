@@ -8,6 +8,10 @@ sources:
 
 - [basic stuff about objects in JavaScript](https://www.w3schools.com/js/js_objects.asp)
 
+extensions:
+
+- [Regex Youtube Tutorials (haven't done them, sometime in the future maybe)](https://www.youtube.com/playlist?list=PL4cUxeGkcC9g6m_6Sld9Q4jzqdqHd2HiD)
+
 ## Js Types
 
 ## evaluation rules
@@ -46,6 +50,41 @@ sources:
 
 all operators return a value, even the assignment operator!
 
+### Logical Operators
+
+- not limited to bools! can be done on any type
+
+- `&&` has higher precedence than `||`, `!` has highest precedence of them all
+
+-JS OR `||` is more powerful.
+
+- if operand is not bool, then type conversion to bool happens.
+- Use `||` inside an `if` to test for at least one of multiple conditions
+- extra feature: **"truthy value"** :
+  a chain of OR "||" returns the first truthy value or the last one if no truthy value is found.
+- google it for more ingenious uses
+
+- likewise, JS `&&` will return first **falsy** value.
+
+- `&&` operator can replace **if** statements
+
+```javascript
+let x = 1;
+x > 0 && alert("Greater than zero!");
+```
+
+same as this below, but the use of `&&` isn't recommended
+
+```javascript
+let x = 1;
+
+if (x > 0) {
+  alert("Greater than zero!");
+}
+```
+
+- you can use a `!!` to typeconvert to bool!, alternatively can use the `Boolean` function.
+
 ### Binary Operators
 
 In general, Js implicitly converts type.
@@ -69,12 +108,12 @@ In general, Js implicitly converts type.
 
 Quite ingenious:
 
-```.javascript
-var x = [0,1,2,3,4,5,6,7,8,9]
+```javascript
+var x = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
 var a = [x, x, x, x, x];
 
 for (var i = 0, j = 9; i <= j; i++, j--)
-  console.log('a[' + i + '][' + j + ']= ' + a[i][j]);
+  console.log("a[" + i + "][" + j + "]= " + a[i][j]);
 ```
 
 ### delete operator
@@ -93,10 +132,10 @@ returns `false` if can't be deleted, reasons:
 
 - NB: **_objects can't be compared_** so the following structural equality check returns false:
 
-```.javascript
-    var x = new Number(500);
-    var y = new Number(500);
-    x == y
+```javascript
+var x = new Number(500);
+var y = new Number(500);
+x == y;
 ```
 
 ## Number Methods and Properties
@@ -127,6 +166,88 @@ true will have number value of 1 and false will have number value of 0
 
 ## Variables in JavaScript
 
+- think: storage containers
+- 3 ways to create:
+
+  1. var [more on why it's old](https://javascript.info/var)
+  2. let
+  3. const
+
+- multiple inline/multiline variable declarations are allowed but inadvisable due to readability
+
+- naming: can use `_`and`$` on their own also!
+
+  - legal to use non-english letters but not advisable.
+
+- `const` declarations:
+
+  - difficult to rmb constants, before execution? use allcaps e.g. `COLOUR_RED`
+  - _camelCase_ for constants that are not known prior to execution
+
+- an extra variable is good, saves a lot more time not debugging!!
+
+## Strings
+
+- strings are **immutable**
+
+- doesn't matter single or double quotes
+
+- [escaping a char](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String#Escape_notation): making sure that the following character after `\` is seen as a text character instead of code character.
+
+- can use `\` to break up long strings for aesthetic purposes in the code view. The same string gets created though, just easier to read. Alternatively, concatenate with `+` to get the same effect.
+
+_String Objects vs Literals_:
+
+- primitives **can** have string object methods working on them!
+- different output on calling `eval()`:
+
+```javascript
+var s1 = "2 + 2"; // creates a string primitive
+var s2 = new String("2 + 2"); // creates a String object
+console.log(eval(s1)); // returns the number 4
+console.log(eval(s2)); // returns the string "2 + 2"
+```
+
+- **NB:** to get the primitive value from string object, use the `valueOf()` method.
+
+### String Methods and Properties
+
+[relevant tutorial](https://www.w3schools.com/js/js_string_methods.asp)
+
+[reference sheet](https://www.w3schools.com/jsref/jsref_obj_string.asp)
+
+- some useful operations on strings:
+
+  - `length`
+  - `+=`
+  - Character access (since it's a array of chars)
+  - string comparison using usual comparators: `<=`, `>` and so on...
+  - to do case insensitive comparison, convert everything to **Uppercase** instead of **lowercase** because of UTF-8 char conversions issues.
+
+- `indexOf()` : returns the index of the position of the first occurrence of a specified text in a string (somewhat like a member function for strings)
+- `lastIndexOf()` ^similar
+  note that if string not found, then both return `-1` and you can supply starting index as a second parameter to that method.
+- `search()` for string in string, returns position
+  Search vs indexOf: - search can do regex searches but not indexOf - indexOf can specify starting position but not search
+
+- 3 ways to extract string parts:
+
+  - `slice(start, end)`
+    - negative params means start counting from the back
+    - omitting the second param means rest of the string will be returned after the start
+  - `substring(start, end)` : same as slice, but no negative params
+  - `substr(start, length)` : second param is length
+
+- Replacing String content: `replace()`
+
+  - note: regex, if used, is written without quotes
+    regex flags:
+    `/g`, `/i`
+
+- `trim()` to remove whitespace before and after
+
+- `split()` to convert string to an array, input param is the delimiter of choice
+
 ## Arrays
 
 - two ways to create:
@@ -134,3 +255,35 @@ true will have number value of 1 and false will have number value of 0
   or`var cars = ["Saab","Volvo","BMW"];`
 
 - full array access:
+
+## Comparators
+
+- just treat any comparison with `undefined/null` except string equality with care. Don't use comparatives with a possibly null/undefined. **_Do a null/undefined check before handling them_**
+
+- String comparisons are lexicographical, comparing according to **Unicode Order**. (hence `"a"` > `"A"`)
+
+- Js implicity converts string numerical values and bools to numbers when there's comparison b/w diff types.
+
+- Rmb that equality check will convert values using numeric conversion. Other caveats:
+
+  - regular equality `==` can't differentiate `0` or empty string `""`from `false`.
+  - to differentiate `0` from `false`, use strict equality `===`
+
+- comparing with `null` and `undefined`:
+  - regular equality returns true, strict equality returns false
+  - numerical conversion: -`null` converted to `0` and `undefined` converted to `NaN`
+  - strange outputs for
+
+## Conditionals
+
+- `if`,`else`,`else if` `switch`
+
+- `else` block is optional!
+
+- put a `default` case in case the switch expression never returns true.
+
+- multiple ternary operator to give a _series of tests_
+
+- [good use cases for switch statements](https://www.digitalocean.com/community/tutorials/how-to-use-the-switch-statement-in-javascript)
+
+- you can put one case statement for multiple cases!
