@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>rockpaperscissors</title>
+  </head>
+  <body>
+    <script>
+      const array = ["ROCK", "PAPER", "SCISSORS"];
+      // 0 beats 2, 1 beats 0, 2 beats 1
+      function computerPlay() {
+        //chose random num b/w 1 to 3 inclusive
+        return Math.floor(3 * Math.random());
+      }
+      function playRound(playerSelection, computerSelection) {
+        const playerInput = playerSelection.toUpperCase();
+        const playerIdx = array.indexOf(playerInput);
+
+        if (playerIdx !== computerSelection) {
+          return (playerIdx == 0 && computerSelection == 2) ||
+            (playerIdx == 1 && computerSelection == 0) ||
+            (playerIdx == 2 && computerSelection == 1)
+            ? "You Win! " + playerInput + " beats " + array[computerSelection]
+            : "You Lose! " + array[computerSelection] + " beats " + playerInput;
+        } else {
+          console.log("It's a draw, both chose " + playerInput) ;
+          return "It's a draw, both chose " + playerInput;
+        }
+      }
+      function game() {
+        let playerWins = 0;
+        for (let i = 0; i < 5 && (playerWins > -3 && playerWins < 3); i++) {
+          const char = playRound(
+            prompt("choose rock, paper or scissors!"),computerPlay()).charAt(4);
+          console.log(char);
+          if (char === "W") {
+            playerWins++;
+          } else if (char === "L") {
+            playerWins--;
+          } else {
+          }
+        }
+        if (playerWins > 0) {
+          return "Congrats, you won the game, with number of successful rounds = " + playerWins + " times";
+        } else if (playerWins < 0) {
+          return "Not a good day today, lost, with number of successful rounds  " + playerWins + " times" ;
+        } else {
+          return "it's a draw";
+        }
+      }
+    </script>
+  </body>
+</html>
