@@ -2,9 +2,15 @@
 
 sources:
 
-- [w3schools Js tutorials](https://www.w3schools.com/js/)
+- clean code tips:
 
-- [MDN stuff about Js](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/)
+  - [10 tips to write clean code](https://onextrapixel.com/10-principles-for-keeping-your-programming-code-clean/)
+  - [this clean code guidelines wiki is pretty huge](http://wiki.c2.com/?SelfDocumentingCode)
+  - [airbnb JavaScript styleguide](https://github.com/airbnb/javascript)
+
+- [w3schools JavaScript tutorials](https://www.w3schools.com/js/)
+
+- [MDN stuff about JavaScript](https://developer.mozilla.org/en-US/docs/Learn/JavaScript/)
 
 - [basic stuff about objects in JavaScript](https://www.w3schools.com/js/js_objects.asp)
 
@@ -12,16 +18,16 @@ extensions:
 
 - [Regex Youtube Tutorials (haven't done them, sometime in the future maybe)](https://www.youtube.com/playlist?list=PL4cUxeGkcC9g6m_6Sld9Q4jzqdqHd2HiD)
 
-## Js Types
+## JavaScript Types
 
 ## evaluation rules
 
 - left to right
 - Precedence rules, google it.
 
-### Numbers: the only data type for numbers in Js (other than BigInt)
+### Numbers: the only data type for numbers in JavaScript (other than BigInt)
 
-- Js numbers are always 64bit floats
+- JavaScript numbers are always 64bit floats
 - precision of `int` up to 15 digits
 - float error:  
   wrong example: `var x = 0.2 + 0.1; // x will be 30000000000000004`
@@ -56,7 +62,7 @@ all operators return a value, even the assignment operator!
 
 - `&&` has higher precedence than `||`, `!` has highest precedence of them all
 
--JS OR `||` is more powerful.
+-JavaScript OR `||` is more powerful.
 
 - if operand is not bool, then type conversion to bool happens.
 - Use `||` inside an `if` to test for at least one of multiple conditions
@@ -64,7 +70,7 @@ all operators return a value, even the assignment operator!
   a chain of OR "||" returns the first truthy value or the last one if no truthy value is found.
 - google it for more ingenious uses
 
-- likewise, JS `&&` will return first **falsy** value.
+- likewise, JavaScript `&&` will return first **falsy** value.
 
 - `&&` operator can replace **if** statements
 
@@ -87,7 +93,7 @@ if (x > 0) {
 
 ### Binary Operators
 
-In general, Js implicitly converts type.
+In general, JavaScript implicitly converts type.
 
 - `+` is overloaded operator: both addition and string concatenation but if one of the operands is a string, then the number is converted to a string and concatenated.
 
@@ -140,7 +146,7 @@ x == y;
 
 ## Number Methods and Properties
 
-- usually, primitives can't have any properties or methods, only objects can. **JS is different**
+- usually, primitives can't have any properties or methods, only objects can. **JavaScript is different**
 
 - properties only work on numbers, won't on variables!
 
@@ -148,7 +154,7 @@ x == y;
 - `toExponential()` method returns string, in standard form (with rounding done if you input significant fig param)
 - `toFixed()` returns string, w number written to a specified number of decimals as per input
 - `toPrecision()`: return to a certain sig fig
-- `valueOf()` returns number as a number. internally used in underlying Js, no reason to actually include in our own code.
+- `valueOf()` returns number as a number. internally used in underlying JavaScript, no reason to actually include in our own code.
 
 ### 3 ways to convert Variable to Numbers
 
@@ -218,6 +224,7 @@ console.log(eval(s2)); // returns the string "2 + 2"
 
 - some useful operations on strings:
 
+  - note: can't reverse a string directly! have to split it up first!
   - `length`
   - `+=`
   - Character access (since it's a array of chars)
@@ -248,21 +255,13 @@ console.log(eval(s2)); // returns the string "2 + 2"
 
 - `split()` to convert string to an array, input param is the delimiter of choice
 
-## Arrays
-
-- two ways to create:
-  `var cars = new Array("Saab", "Volvo", "BMW");` [redundant way]
-  or`var cars = ["Saab","Volvo","BMW"];`
-
-- full array access:
-
 ## Comparators
 
 - just treat any comparison with `undefined/null` except string equality with care. Don't use comparatives with a possibly null/undefined. **_Do a null/undefined check before handling them_**
 
 - String comparisons are lexicographical, comparing according to **Unicode Order**. (hence `"a"` > `"A"`)
 
-- Js implicity converts string numerical values and bools to numbers when there's comparison b/w diff types.
+- JavaScript implicity converts string numerical values and bools to numbers when there's comparison b/w diff types.
 
 - Rmb that equality check will convert values using numeric conversion. Other caveats:
 
@@ -288,11 +287,11 @@ console.log(eval(s2)); // returns the string "2 + 2"
 
 - you can put one case statement for multiple cases!
 
-## JS Functions
+## JavaScript Functions
 
 - [updated info on Functions, useful to check on default params](https://www.theodinproject.com/courses/web-development-101/lessons/fundamentals-part-3?ref=lnav)
 
-- some built-in functions written in low-level languages like C++, not web languages like Js
+- some built-in functions written in low-level languages like C++, not web languages like JavaScript
 
 - some are defined as part of browser APIs
 
@@ -322,7 +321,7 @@ console.log(eval(s2)); // returns the string "2 + 2"
   - argument: actual values passed in (for a function call)
   - **function arguments**, when variables are your input params. Any change to the function argument will not change variable in the outer scope! Passing in these arguments creates a local copy within the calling function's scope.
   - if a param is omitted, then its default value is `undefined`.
-    We can control the default by doing something like this (new Js feature):
+    We can control the default by doing something like this (new JavaScript feature):
 
     ```javascript
     function showMessage(from, text = "no text given") {
@@ -360,7 +359,7 @@ console.log(eval(s2)); // returns the string "2 + 2"
   - check
 - one function one action, don't do more than one thing within a function
 
-### JS labelling (wow)
+### JavaScript labelling (wow)
 
 ### Lambda/Arrow Functions [same as CS1101S]
 
@@ -372,3 +371,234 @@ console.log(eval(s2)); // returns the string "2 + 2"
 - arrow functions have no "arguments"
 
 - no `super` kiv for later
+
+## Arrays
+
+- arrays are special objects, `typeof` returns `"objects"`. Note that arrays always have numbered indexes while objects have named(including numbered) indexes.
+  - use objects when you want element _names_ to be strings and arrays
+    when you want element _names_ to be numbers
+
+```javascript
+var person = ["John", "Doe", 46]; // an array called person
+var person = { firstName: "John", lastName: "Doe", age: 46 }; // an object
+```
+
+- two ways to create:
+  `var cars = new Array("Saab", "Volvo", "BMW");` [redundant way, avoid]
+  or`var cars = ["Saab","Volvo","BMW"];`
+
+- array elements can be of any (and mixed) types, including other objects
+
+### Array Properties and Methods
+
+[array methods reference](https://www.w3schools.com/jsref/jsref_obj_array.asp)
+
+- `length`
+- safest way to loop thru an array is via a `for` loops
+- `push` (_returns new array length_)and `pop` (_returns the value that was popped out_) [better to use push rather than via index assignment]
+
+- `shift()` and `unshift(<insert valueto index 0>)`
+
+- unlike other languages, **JavaScript doesn't support Hashes (associative arrays with named indexes)**, JavaScript arrays always use numbered indexes.
+
+- 3 ways of identifying if object is an array:
+
+  1. `Array.isArray(fruits); // returns true`
+  2. construct yourself: `function isArray(x) { return x.constructor.toString().indexOfArray") > -1;}` returns true _if the object prototype containts the word "Array"_
+  3. `fruits instanceof Array; // returns true`
+
+- `splice()` and `concat()` can be used to manipulate array elements without leaving `undefined` holes (unlike `delete()` which leaves undefined holes)
+
+  - **_impt: can use splice to insert and remove elements!!!_**
+  - `concat()` can take any number of arguments, returns new arr
+
+- `slice()`: returns new arr obj [see slice vs splice](https://stackoverflow.com/questions/37601282/javascript-array-splice-vs-slice)
+
+- automatic application of `toString()`
+
+## JavaScript Loops
+
+- any part of the for loop statement can be skipped
+  - `for(;;){//infiniteloop}`
+- conscientiously avoid infinite loops
+- `continue` vs `break`
+
+  - **_syntax constructs that aren't expressions can't be used with the ternary operator so things like break/continue aren't allowed within ternary operator_**
+  - can label an outer loop and specifically break that like so:
+
+  ```javascript
+  outer: for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 3; j++) {
+      let input = prompt(`Value at coords (${i},${j})`, "");
+
+      // if an empty string or canceled, then break out of both loops
+      if (!input) break outer; // (*)
+
+      // do something with the value...
+    }
+  }
+  alert("Done!");
+  ```
+
+  labelling doesn't allow us to "jump" around arbitrary locations though, only possible from inside a loop, with the label being somewhere above the directive
+
+## Test Driven Development
+
+A productivity hack where you write out test cases first (including how a function call shall be made) and write code until the tests work out properly.
+
+- see the use of spec files and writing out test files!! **_very useful_**
+
+### Higher-Order Functions
+
+- accumulate is called `reduce()` similar to CS1101S, see documentation!
+
+### Takeaways from Exercises
+
+1. Methods applied Left to Right!
+
+also note that strings can't be directly reversed. Have to split first into arr, then reverse then join back.
+
+```javascript
+const reverseString = function(str) {
+  return str
+    .split("")
+    .reverse()
+    .join("");
+};
+```
+
+2. Two ways to check if int (some minor diff, go google):
+   `Number.isInteger(res)` or `res % 1 === 0`
+
+3. Output numerical string as number:
+   `Number(str)` or `(+str)`
+
+## DOM Manipulation
+
+[a reference site called DOM Enlightenment](http://domenlightenment.com/)
+
+- Analogous to a family tree
+
+### Selectors: target nodes w them. CSS style selectors an relationship property selectors
+
+- CSS selectors: ref to the id and class tags you've created in opening tags of your HTML nodes
+
+- Relational Selectors: referring to the "family tree", refer to nodes via selectors like `.firstElementChild`
+
+### DOM Methods
+
+- browser parses HTML code into the DOM. Nodes are therfore objects with many properties and methods
+  attached to them. **_JavaScript will alter the DOM, but not the HTML. JavaScript will merely change what the browser renders._**
+
+- for this reason, put all the script tags or JS files at the bottom of the HTML File so that it gets run after the
+  DOM nodes are parsed and created, to avoid runtime errors.
+
+#### Query Selectors: to target nodes
+
+- `element.querySelector(selector)` : first match of selector
+- `element.querySelectorAll(selectors)`: returns a **_nodelist_** (looks and behaves like an arr but isn't an array)
+  nodelist doesn't have all the array methods!
+  Can convert a nodelist to an array using [spread operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax)
+
+#### Element Creation (in memory)
+
+- syntax: `document.createElement(tagName[, options])`
+- element created isn't put into the DOM yet. Still can manipulate the element w some logic before putting it in.
+
+#### Appending Elements
+
+- append as a _last_ child to a parent node, syntax: `parentNode.appendChild(childNode)`
+- inserting newNode into parentNode, before a `referenceNode`: `parentNode.insertBefore(newNode, referenceNode)`
+
+#### Removing Elements
+
+- remove a child from a parentNode and return reference to the child: `parentNode.removeChild(child)`
+
+#### Altering Elements
+
+As long as there is some reference to an element, we can alter its properties:
+
+##### Adding Inline CSS style (not pretty)
+
+- kebab-cased stuff can't use `-`, use camelcase (just read documentation when required)
+  see how to represent a CSS Property as a JavaScript Property
+
+- `<referencename>.style.cssText = "<insert property : value rules >"`
+
+- or, `<referencename>.setAttribute('style', "<css rules>")`
+
+##### Editing Attributes
+
+- `setAttribute()`
+- `getAttribute()`
+- `removeAttribute()`
+
+##### Working With Classes
+
+- adding a new class to an element,
+- removing
+- toggling a class (toggling it `active` or removing it)
+
+#### Adding text / HTML Content (textContent is better than adding innerHTML)
+
+- `div.textContent = 'Hello World!'`
+
+- `div.innerHTML = '<span>Hello World!</span>';` renders HTML inside the `div`
+
+## DOM Events
+
+- [list of DOM Events](https://www.w3schools.com/jsref/dom_obj_event.asp)
+- events allow dynamic webpages!
+
+- events examples: mouseclicks, keypresses
+
+- 3 ways to make webpage listen and react to events:
+  - attach function attibutes directly to HTML
+  - set the `"on_event_` property on the **DOM object** in your JavaScript
+  - attach **event listeners** to the nodes in your JavaScript [***Preferred method***]
+
+### Attaching Function Attributes Directly to HTML
+
+- problems: only have access to 1 "onclick" event
+
+  ```html
+  <button onclick="alert('Hello World')">Click Me</button>
+  ```
+
+### Attaching Listenters to JavaScript File
+
+- put the event tag on html file like so:
+  `<button id="btn">Click Me</button>`
+
+- then, update the JavaScript file to use the .onClick event listener:
+
+  ```javascript
+  // the JavaScript file
+  var btn = document.querySelector("#btn");
+  btn.onclick = () => alert("Hello World");
+  ```
+
+### Adding event listener to the DOM property
+
+```javascript
+
+  <!-- the html file -->
+  <button id="btn">Click Me Too</button>
+
+// the JavaScript file
+  var btn = document.querySelector('#btn');
+  btn.addEventListener('click', () => {
+    alert("Hello World");
+});
+```
+
+**_Protip: create named functions instead of lambda functions to do repetitive actions!_**
+
+- adding `e` as an function parameter for onEvent function calls
+
+#### Adding listeners to groups of nodes
+
+Ref to how we got a nodelist of all the items that match a specific selector with
+`querySelectorAll('selector')`
+
+[TODO: extra practice JS stuff, skipped for now](https://github.com/wesbos/JavaScript30)
