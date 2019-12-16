@@ -1,4 +1,4 @@
-# Backend Basics
+# Backend Basics: my own notes
 
 Resources:
 
@@ -7,7 +7,57 @@ Resources:
 
 I lost the original notes, so this is a sort of rudimentary remake.
 
-## Why Ruby?
+---
+
+**_Contents:_**
+
+- [Backend Basics: my own notes](#backend-basics-my-own-notes)
+  - [Why Ruby](#why-ruby)
+  - [Ruby Variables](#ruby-variables)
+  - [Ruby Strings](#ruby-strings)
+    - [Ruby String Methods](#ruby-string-methods)
+    - [String Combination: Concatenation vs Interpolation](#string-combination-concatenation-vs-interpolation)
+    - [Ruby Symbols](#ruby-symbols)
+  - [Ruby Numbers](#ruby-numbers)
+    - [Ruby Arithmetic](#ruby-arithmetic)
+    - [Math Object](#math-object)
+    - [A Better Loop using the .times method](#a-better-loop-using-the-times-method)
+  - [Ruby Blocks](#ruby-blocks)
+    - [Blocks passed as methods](#blocks-passed-as-methods)
+  - [Ruby Arrays](#ruby-arrays)
+    - [Array Methods](#array-methods)
+  - [Ruby Hashes](#ruby-hashes)
+  - [Ruby Conditionals](#ruby-conditionals)
+  - [Objects, Attributes, Methods](#objects-attributes-methods)
+    - [Classes and Instances](#classes-and-instances)
+      - [Time Class](#time-class)
+      - [Instance Variables](#instance-variables)
+        - [Initializing a Class](#initializing-a-class)
+  - [puts, gets, chomp](#puts-gets-chomp)
+  - [Ruby Control Flow](#ruby-control-flow)
+    - [Adding Params to Self-Made Methods](#adding-params-to-self-made-methods)
+  - [More on Ruby Classes](#more-on-ruby-classes)
+  - [Ruby Blocks and Procs (Procedures)](#ruby-blocks-and-procs-procedures)
+    - [Methods that Return Procs](#methods-that-return-procs)
+    - [Passing Blocks (Not Procs) into Methods](#passing-blocks-not-procs-into-methods)
+  - [Basic Ruby Tutorials (wth, I just looked at answers :') )](#basic-ruby-tutorials-wth-i-just-looked-at-answers)
+  - [Takeaways from Odin Project Ruby Tutorials](#takeaways-from-odin-project-ruby-tutorials)
+  - [Frameworks Introduction](#frameworks-introduction)
+    - [Ruby on Rails Basics](#ruby-on-rails-basics)
+      - [Rails Application: 6 perspectives](#rails-application-6-perspectives)
+      - [Rails Hello World Application (skipped it due to some Webpacker error)](#rails-hello-world-application-skipped-it-due-to-some-webpacker-error)
+      - [MVC: Model-View-Controller](#mvc-model-view-controller)
+        - [Generating Controller](#generating-controller)
+      - [Rails Basic App Example](#rails-basic-app-example)
+      - [Using Libraries](#using-libraries)
+        - [Ruby Standard Library](#ruby-standard-library)
+        - [Rubygems : Ruby's package manager](#rubygems--rubys-package-manager)
+        - [Bundler: Sandboxes of Gems](#bundler-sandboxes-of-gems)
+        - [Ruby Load Path](#ruby-load-path)
+
+---
+
+## Why Ruby
 
 - Always runs thru the vm, rubyenv, so you it's guaranteed that the same code will run everywhere, no comparitibility issues
 
@@ -47,8 +97,10 @@ I lost the original notes, so this is a sort of rudimentary remake.
 - `.upcase` / `.capitalize` (only first **_character_** will be capitalised), `.downcase`, `.swapcase`
 
 - Visual Formatting Methods:
+
   - `center(<line width>)`
   - `.ljust` & `.rjust`
+
   ```ruby
   lineWidth = 40
   str = '--> text <--'
@@ -56,6 +108,7 @@ I lost the original notes, so this is a sort of rudimentary remake.
   # returns:
   # --> text <--                --> text <--
   ```
+
   - don't expect formatting like a word processor though
 
 ### String Combination: Concatenation vs Interpolation
@@ -91,8 +144,6 @@ I lost the original notes, so this is a sort of rudimentary remake.
 ### Math Object
 
 - there's a **scope operator** kiv
-
--
 
 ### A Better Loop using the `.times` method
 
@@ -188,6 +239,7 @@ I lost the original notes, so this is a sort of rudimentary remake.
 - Objects hold info, called **attributes** and perform actions called **methods**
 
 - note the existence of **\*destructive methods** which are called bang methods and whose names end with a `!`
+
   ```ruby
   name = "Ruby Monstas"
   puts name.downcase! # destructive version
@@ -527,7 +579,8 @@ Also see the spec file to see how to make spec files
   end
   ```
 
-- TODO: 
+- TODO:
+
   - learn how to use regex effectively, see [solutions for piglatin exercise](/home/ritesh/coding/Odin-Project/backend/learn_ruby/04_pig_latin) to see why
   - skipped the timer exercise.
 
@@ -559,15 +612,224 @@ Also see the spec file to see how to make spec files
   p obj1.name #=> "Forrest Gump"
   obj1.name = 'Fight Club'
   p obj1.name #=> "Fight Club"
-
-
   ```
-  - And then accessors:
-    - `attr_reader` automatically generates a getter method for each given attribute.
 
-    - `attr_writer`  automatically generates a setter method for each given attribute.
+- And then accessors:
 
-    - `attr_accessor` automatically generates a getter and setter method for each given attribute.
-    
+  - `attr_reader` automatically generates a getter method for each given attribute.
+
+  - `attr_writer` automatically generates a setter method for each given attribute.
+
+  - `attr_accessor` automatically generates a getter and setter method for each given attribute.
 
 - Using the `array.include?(<element>)` to see if an element is within the array
+
+- [`sprintf` formatting! data is put into a template that you create](https://idiosyncratic-ruby.com/49-what-the-format.html)
+
+## Frameworks Introduction
+
+- [see the stack diagrams at the bottom of this page to get some inspiration or smth](https://rubygarage.org/blog/technology-stack-for-web-development)
+
+* frameworks: collection of commonly used code. Think: collection of tools
+
+* not the same as a content management system. Frameworks are more general
+
+* allow for organisation, keeps your code highly modular and clean.
+
+* e.g starting a Rails app, you aldy get a good Model-View-Controller separation
+
+* not every framework is open-source!
+
+* Typically frameworks provide libraries for accessing a database, managing sessions and cookies, creating templates to display your HTML and in general, promote the reuse of code.
+
+* Frameworks generally have a way of interacting with a database w/o having to write your own SQL everytime you wanna do a CRUD action
+
+* template systems for HTML
+
+things required:
+![Diagram](https://rubygarage.s3.amazonaws.com/uploads/article_image/file/709/technology-stack-diagram.jpg)
+
+1. Server side programming language
+
+2. database: relational or non-relational
+
+3. Caching system to reduce the load on the database (and handle large amounts of traffic) e.g. **Memcached** and **Redis** for example
+
+4. server to handle clients' requests
+
+- [capabilites](https://developer.mozilla.org/en-US/docs/Learn/Server-side/First_steps/Web_frameworks) of common web frameworks
+
+  - Directly work w HTTP requests and responses
+  - Route requests to the appropriate handler
+  - Make it easy to access data in the request
+  - Abstract and simplify database access
+
+    - a database layer that abstracts database read, write, query, and delete operations. This abstraction layer is referred to as an Object-Relational Mapper (ORM)
+
+      - ORM allows us to validate data for security an fidelity purposes
+
+      - ORM allows us to modify the database without needing to change the code that relies on the database
+
+  - Rendering Data: templating systems.
+    - other formats, not just HTML: JSON, XML...
+
+### Ruby on Rails Basics
+
+- Guiding Principles:
+
+  - Convention over configuration
+
+    - Conventions are codified as the [Rails API](https://api.rubyonrails.org/) but it's more of a software library than an API
+
+  - Rails combines Ruby (programming lang) w HTML,CSS,JS to create a webapp that runs on a web server
+
+  - Rails is a domain specific language
+
+  - Rails is opinionated and **_omakase_**
+
+  - Don't Repeat Yourself (DRY)
+
+- Noteworthy Challenges:
+
+  - Standard Ruby lacks parallelism
+
+  - slow in comparison to C++ or Java. Doesn't really matter though
+
+- The idea behind a webapp is that Rails combines the Ruby
+  programming language with HTML, CSS, and JavaScript to create a web application. Rails uses Ruby to dynamically assemble HTML, CSS, and JavaScript files from component files (often adding content from a database).
+
+  if you are creating several web pages, you might want to assemble the HTML file from smaller components. For example, you might make a small file that will be included on every page to make a footer (Rails calls these “partials”).
+  You'd want [separation of concerns](https://en.wikipedia.org/wiki/Separation_of_concerns)
+
+#### Rails Application: 6 perspectives
+
+1. Browser's perspective:
+
+- Ruby just generates the front-end related files. Generated dynamically.
+
+2. Coder's perspective:
+
+- coder sees a set of editable files.
+- files organisesd w a specific file structure, which you must internalize!
+
+3. Software Architect's Perspective
+
+- a Rails webapp is organized as a hierarchy of classes defined by the Rails API
+
+4. Time Traveler's (Temporal) Perspective
+
+- Use of version control systems
+- can somewhat say that a Rails project is a series of snapshots of files stored in a git repository
+
+5. Gem Hunter's Perspective
+
+- think of a Rails application as a collection of gems that provide basic functionality, plus custom code that adds unique features for a particular website.
+- Gemfile in app's root directory lists each gem used.
+  - Gemfile used by utility prog (called **_Bundler_**) that adds each gem to the Ruby Programming Env
+- Some common gems required by every Rails Application:
+  - database adaptor: for Rails to connect to databases
+  - for testing and helping people find bugs
+  - functionality gems:
+    - logging in users
+    - credit card processing
+
+6. Tester's Perspective : interlinked w the Test Driven Development (TDD) methodology
+
+- there's a lot of automated testing
+
+---
+
+#### Rails Hello World Application (skipped it due to some Webpacker error)
+
+Most basic steps:
+
+1. `rails new` will create a skeleton Rails application within a working dir. Put it in a dir that you've named as `environment`
+
+- [summary of the rails files created upson creating a new rails application](https://www.railstutorial.org/book/beginning#table-rails_directory_structure)
+- part of the **asset pipeline**: the `apps/assets` directory
+
+2. use **Bundler** to install and include gems needed by the app.
+   - You'd want to update the Gemfile to control what gems are required
+   - even minor point releases could break Rails applications, so it's a good idea to specify exactly what version of gems you're using in the Gemfile.
+   - run `bundle install` and `bundle update` as necessary
+3. Set up rails server, have to enable connections to the local webserver by:
+   - make sure `yarn` gem is installed, and make sure `webpacker` is installed
+   - add the two lines:
+     - `# Allow connections to local server. config.hosts.clear`
+       to `config/environments/development.rb`
+
+---
+
+#### MVC: Model-View-Controller
+
+- just see this [ruby guides on how to implement a basic blog with CRUD features](https://guides.rubyonrails.org/getting_started.html)
+
+![MVC schematic](/backend/MVC_model.png)
+
+- MVC architectural pattern enforces a separation b/w
+
+  - the data in the application (e.g. user info)
+  - code used to display it
+    This is a common way to structure a GUI
+
+- **controller**: handles decisions. Rails calls it
+  `ActionController`
+- **view**: handles the presentation. Rails calls it`ActionView`
+- **model**:handles data Rails calls it `ActiveRecord`. note the **active**
+
+- **Controllers** handle HTTP requests that the webserver receives
+  - for dynamic sites, controller interacts w a **model**, a ruby object that represents an element of the site (e.g. user) and is incharge of communicating with the database
+  - might immediately render a **view**, a template that is converted to HTML and sent back to the browser
+
+* **It is the controller, not the view, where information is collected**. The view merely displays.
+
+* Templates are written in **erb**
+
+##### Generating Controller
+
+- run the controller generator like so:
+
+  - `$ rails generate controller Welcome index`
+
+- example of config of routing file:
+  - edit `config/routes.rb`
+
+#### Rails Basic App Example
+
+- just see this [ruby guides on how to implement a basic blog with CRUD features](https://guides.rubyonrails.org/getting_started.html)
+
+#### Using [Libraries](http://webapps-for-beginners.rubymonstas.org/libraries.html)
+
+- using the method `require` to load libraries.
+
+A few sources:
+
+- Ruby Standard Library
+- Rubygems and Bundler
+- The Ruby load path
+
+##### Ruby Standard Library
+
+- comes with Ruby itself. Can just use the `require` method to make the libraries available in your code
+
+- low level tools. More like nuts and bolts rather than
+
+##### Rubygems : Ruby's package manager
+
+- There's usually a gemfile for every common feature you wanna make, e.g. [Google Authentication](https://rubygems.org/gems/google-oauth/versions/0.0.2)
+
+- Installing a Gem will install its required dependencies as well
+
+- Ruby gems hosted on [RubyGems.org](https://RubyGems.org)
+
+##### Bundler: Sandboxes of Gems
+
+- we need to mainain the right versions of the right gems on our system, else we'd get a lot of subtle bugs
+- Bundler allows you to define which gems your application depends on (in a file called `Gemfile`) Running `bundle install`  figures out which gem versions work well with each other, and update the solution to `Gemfile.lock`
+
+##### Ruby Load Path
+- Ruby has a load path too.
+- this is what the require method uses
+- you can quickly check the default load path of your Ruby 
+  installation like this:
+  - `ruby -e 'puts $LOAD_PATH'`
