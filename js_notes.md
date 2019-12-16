@@ -1,4 +1,4 @@
-# The Odin Project JavaScript Fundamentals
+# The Odin Project JavaScript Fundamentals: my own notes
 
 sources:
 
@@ -17,6 +17,64 @@ sources:
 extensions:
 
 - [Regex Youtube Tutorials (haven't done them, sometime in the future maybe)](https://www.youtube.com/playlist?list=PL4cUxeGkcC9g6m_6Sld9Q4jzqdqHd2HiD)
+
+
+-----------
+
+***Table of Contents***
+- [The Odin Project JavaScript Fundamentals: my own notes](#the-odin-project-javascript-fundamentals-my-own-notes)
+  - [JavaScript Types](#javascript-types)
+  - [evaluation rules](#evaluation-rules)
+    - [Numbers: the only data type for numbers in JavaScript (other than BigInt)](#numbers-the-only-data-type-for-numbers-in-javascript-other-than-bigint)
+    - [NaN : number is not a legal number and Infinity](#nan--number-is-not-a-legal-number-and-infinity)
+  - [Operators](#operators)
+    - [Logical Operators](#logical-operators)
+    - [Binary Operators](#binary-operators)
+    - [Assignment Operators](#assignment-operators)
+    - [Bitwise and Bitshifting Operators](#bitwise-and-bitshifting-operators)
+    - [Comma operator](#comma-operator)
+    - [delete operator](#delete-operator)
+    - [Equality: structural verses pointer equality](#equality-structural-verses-pointer-equality)
+  - [Number Methods and Properties](#number-methods-and-properties)
+    - [3 ways to convert Variable to Numbers](#3-ways-to-convert-variable-to-numbers)
+  - [Variables in JavaScript](#variables-in-javascript)
+  - [Strings](#strings)
+    - [String Methods and Properties](#string-methods-and-properties)
+  - [Comparators](#comparators)
+  - [Conditionals](#conditionals)
+  - [JavaScript Functions](#javascript-functions)
+    - [Function Scope and Conflicts {CS1101S Environment Model}](#function-scope-and-conflicts-cs1101s-environment-model)
+    - [Function Return Values](#function-return-values)
+    - [Naming](#naming)
+    - [JavaScript labelling (wow)](#javascript-labelling-wow)
+    - [Lambda/Arrow Functions [same as CS1101S]](#lambdaarrow-functions-same-as-cs1101s)
+  - [Arrays](#arrays)
+    - [Array Properties and Methods](#array-properties-and-methods)
+  - [JavaScript Loops](#javascript-loops)
+  - [Test Driven Development](#test-driven-development)
+    - [Higher-Order Functions](#higher-order-functions)
+    - [Takeaways from Exercises](#takeaways-from-exercises)
+  - [DOM Manipulation](#dom-manipulation)
+    - [Selectors: target nodes w them. CSS style selectors an relationship property selectors](#selectors-target-nodes-w-them-css-style-selectors-an-relationship-property-selectors)
+    - [DOM Methods](#dom-methods)
+      - [Query Selectors: to target nodes](#query-selectors-to-target-nodes)
+      - [Element Creation (in memory)](#element-creation-in-memory)
+      - [Appending Elements](#appending-elements)
+      - [Removing Elements](#removing-elements)
+      - [Altering Elements](#altering-elements)
+        - [Adding Inline CSS style (not pretty)](#adding-inline-css-style-not-pretty)
+        - [Editing Attributes](#editing-attributes)
+        - [Working With Classes](#working-with-classes)
+      - [Adding text / HTML Content (textContent is better than adding innerHTML)](#adding-text--html-content-textcontent-is-better-than-adding-innerhtml)
+  - [DOM Events](#dom-events)
+    - [Attaching Function Attributes Directly to HTML](#attaching-function-attributes-directly-to-html)
+    - [Attaching Listenters to JavaScript File](#attaching-listenters-to-javascript-file)
+    - [Adding event listener to the DOM property](#adding-event-listener-to-the-dom-property)
+      - [Adding listeners to groups of nodes](#adding-listeners-to-groups-of-nodes)
+
+
+-----------
+
 
 ## JavaScript Types
 
