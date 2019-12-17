@@ -3,7 +3,10 @@
 <ul id="articles">
   <% @articles.each do |article| %>
     <li>
-      <%= article.title %>
+      <%= link_to article.title, article_path(article), class: "article_title", id: "article_#{article.id}"=%>
+      <%# article.title is the text that the link says. The article_path(article) is the route helper %>
+      <%# when template is rendered, it outputs HTML like a normal anchor tag %>
     </li>
   <% end %>
 </ul>
+<%= link_to "Create a New Article", new_article_path, class: "new_article"%>

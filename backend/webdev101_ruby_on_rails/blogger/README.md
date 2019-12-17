@@ -10,7 +10,7 @@ Doing [This Odin Project task](https://www.theodinproject.com/courses/web-develo
 - [Actual README](#actual-readme)
 - [My Own Notes](#my-own-notes)
   - [Expected Basics Covered](#expected-basics-covered)
-  - [Steps](#steps)
+  - [Basic Steps](#basic-steps)
     - [1. Creating new rails application](#1-creating-new-rails-application)
     - [2. Configuring the Database in database.yml](#2-configuring-the-database-in-databaseyml)
     - [3. Starting the Server, to check things are in order](#3-starting-the-server-to-check-things-are-in-order)
@@ -21,6 +21,9 @@ Doing [This Odin Project task](https://www.theodinproject.com/courses/web-develo
     - [8. Creating the Object's Controller](#8-creating-the-objects-controller)
     - [9. Defining the Index Action](#9-defining-the-index-action)
     - [10. Creating the template](#10-creating-the-template)
+    - [11. Adding Navigation to the Index](#11-adding-navigation-to-the-index)
+    - [12. Creating SHOW Action](#12-creating-show-action)
+    - [13. Styling your Templates](#13-styling-your-templates)
   - [Takeaways](#takeaways)
 
 # Actual README
@@ -60,7 +63,7 @@ Things you may want to cover:
 6. RESTful design
 7. Adding gems for extra features
 
-## Steps
+## Basic Steps
 
 ### 1. Creating new rails application
 
@@ -125,8 +128,27 @@ Things you may want to cover:
 
   - `<%` : the result of the code will be hidden
   - `<=%`: the result of the ruby code will be output in place of the clause
+  - note that you can add in html element tags into the erb tags
 
   (?) how come we don't need to put doctype tag at the top of the .html.erb file?
+
+### 11. Adding Navigation to the Index
+
+- Ref to Routing Table to see route names that will be used for links
+- _"route helper"_ is used to specify where the link will point to. route helper looks like this:
+  - `article_path(id)`
+- in the template file, we add the links, using a link helper see [index template file](/backend/webdev101_ruby_on_rails/blogger/app/views/articles/index.html.erb)
+  - can add new article creation links at the bottom, similarly. See where you have to point to based on the routing table, then create link using link helper.
+- now, there's a link but there's no `show` action (creating a show method of the controller)
+
+### 12. Creating SHOW Action
+
+- what do we want to do when the user clicks an article title? Find the article, then display a page with its title and body. We’ll use the number on the end of the URL to find the article in the database.
+
+
+### 13. Styling your Templates
+
+- place css sheets, appropriately named at `app/assets/stylesheets/`
 
 ## Takeaways
 
@@ -144,4 +166,7 @@ Things you may want to cover:
 4. There's a technique called **\*reflection** whereby Rails queries the db, looks at the articles table, and assumes whatever columns that table has that should be the attributes for the model.
 
 5. RESTful model of Web interaction: (REpresentational State Transfer)
+
    - 7 Core actions of Rails' REST implementation
+
+6. The `params` method within the controller is a godsend. Returns the hash of the request parameters. See the various keys 
