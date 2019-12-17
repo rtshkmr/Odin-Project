@@ -9,6 +9,15 @@ class ArticlesController < ApplicationController
     def show
         @article = Article.find(params[:id])
 
+
+        # creating the blank comment object:
+        @comment = Comment.new
+        #  wrong example: 
+        # @comment = @article.comments.new 
+        
+        @comment.article_id = @article.id
+
+
     end
     def new
         @article = Article.new
@@ -52,7 +61,7 @@ class ArticlesController < ApplicationController
         redirect_to articles_path(index)
     end
 
-    
+
     # edit action finds the object (article) and displays the form
     def edit 
         @article = Article.find(params[:id])

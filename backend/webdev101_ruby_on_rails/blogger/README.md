@@ -33,6 +33,23 @@ Doing [This Odin Project task](https://www.theodinproject.com/courses/web-develo
       - [4. Creating and Edit Action &amp; View: an Edit Workflow](#4-creating-and-edit-action-amp-view-an-edit-workflow)
       - [5. Adding a flash, as a status message for Update, Create and Destory actions](#5-adding-a-flash-as-a-status-message-for-update-create-and-destory-actions)
       - [6. Setting Root directory to some route](#6-setting-root-directory-to-some-route)
+  - [Commenting Features](#commenting-features)
+    - [Steps:](#steps-1)
+      - [1. Creating the Comment Model](#1-creating-the-comment-model)
+      - [2. Setting up the Migration](#2-setting-up-the-migration)
+      - [3. Understanding Relationships b/w elements of data](#3-understanding-relationships-bw-elements-of-data)
+        - [Testing relationship via the console](#testing-relationship-via-the-console)
+      - [4.Displaying Comments for an Article](#4displaying-comments-for-an-article)
+      - [5. Creating a Web Interface for creating comments: Web-Based Comment Creation](#5-creating-a-web-interface-for-creating-comments-web-based-comment-creation)
+        - [Comment Form Partial: embeding a form onto a view template and creating the partial form template](#comment-form-partial-embeding-a-form-onto-a-view-template-and-creating-the-partial-form-template)
+        - [updating the ArticlesController for the comment](#updating-the-articlescontroller-for-the-comment)
+        - [Improving the Partial Comment form template](#improving-the-partial-comment-form-template)
+        - [Updating the Router to create the necessary paths](#updating-the-router-to-create-the-necessary-paths)
+        - [Creating a CommentsController](#creating-a-commentscontroller)
+        - [Writing the create method within CommentsController](#writing-the-create-method-within-commentscontroller)
+        - [Adding Comments Count](#adding-comments-count)
+        - [Adding Form Labels](#adding-form-labels)
+        - [Adding Timestamp to comment display](#adding-timestamp-to-comment-display)
   - [More Important Takeaways &amp; Reminders](#more-important-takeaways-amp-reminders)
 
 # Actual README
@@ -75,8 +92,6 @@ Things you may want to cover:
 ## Basic **Read** Features
 
 ### Steps:
-
-
 
 #### 1. Creating new rails application
 
@@ -229,12 +244,130 @@ Creating an HTML form to submit the article, then backend processing to get it i
 
 - add a `flash` for the update action, by adding a notice to the `app/views/layouts/application.html.erb` file
 
-- 
+-
 
 #### 6. Setting Root directory to some route
+
 - in `config/routes.rb`, make the root show the articles index page by adding:
   - `root to: 'articles#index'`
 
+## Commenting Features
+
+### Steps:
+
+#### 1. Creating the Comment Model
+
+- brainstorming what it will be:
+
+  - what kind of data does it have?
+  - where will it be attached to?
+  - what other attributes will it have?
+    - author name?
+    - body?
+
+- use generator to create the comment model, passing in the field you want in the db
+  - important files to take note of:
+    - `comment.rb`
+    - migration file
+
+#### 2. Setting up the Migration
+
+- check the newly created migration file for the model that has been created, in this case the migration file would look something like this: `db/migrate/some-timestamp_create_comments.rb`
+  - the fields added would be:
+    - `:author_name`
+    - `:body`
+    - `:article`
+- run the migration in the project's root dir: `bin/rake db:migrate`
+
+#### 3. Understanding Relationships b/w elements of data
+
+- Or in our case here, join together an article in the articles table with its comments in the comments table. We do this by using foreign keys.
+- Foreign keys are a way of marking one-to-one and one-to-many relationships.
+
+  - e.g. 0, 5 or 100 comments may exist for one article, but one article connects to that many comments
+
+- Rails makes it simple to work with relationships. When we created the migration for comments we started with an `references` field named `article`. So this exemplies the convention for **_one-to-many_** relationships:
+
+  - the objects on the "many" end should have a foreign key referencing the "one" object.
+  - that foreign key should be titled with the name of the "one" object, then an underscore, then "id".
+    here, one article has many comments, so each comment has a field named `article_id`
+
+- this relationship is reflected in the respective model files `comment.rb` and `article.rb` files.
+  - **_Ensure you have declared the one-side of the relationship!_** not everything will be autoadded
+
+##### Testing relationship via the console
+
+- test out comment creation and adding comment attribute values
+- `create` vs `new` methods: if you use `new` then you have to explicitly `save` the change. `create` automatically does both
+- rmb to reload the irb so that it doesn't lazily fetch things from the cache
+
+#### 4.Displaying Comments for an Article
+
+- figure out where you want to display it, go to that template and `render` a **partial** for a collection of comments (iterating thru a array that is comments)
+- create the partial template
+
+#### 5. Creating a Web Interface for creating comments: Web-Based Comment Creation
+
+##### Comment Form Partial: embeding a form onto a view template and creating the partial form template
+
+- we want to enter the comment directly onto the article page, instead of being redirected to another form view, so we **embed the new comment form onto the article show**
+
+- insert the `render` into the correct view template.
+
+  - this template will look for `comment/form` so,
+  - create the subdir `comments` inside `app/views`
+
+##### updating the ArticlesController for the comment
+
+- we want to create a blank comment object within the `show` method for the reflection to happen (?)
+- use `Comment.new` instead of `@article.comments.new`. If not, you'll have an extra comment created. That is due to the fact that `@article.comments.new` has added the new `Comment` to the in-memory collection for the `Article`. Don’t forget to change this back.
+- ***The `Comment` object inside that `show` method has to be manually assigned with the `id` of the `Article`, thanks to Rails’ mass-assignment protection.***
+
+
+##### Improving the Partial Comment form template
+ 
+##### Updating the Router to create the necessary paths
+
+- the `form_for` helper is trying to build the form and then submit it to `articles_comments_path` but for this path to exist, you have to provide the router this path, so config it at `config/routes.rb`
+  
+##### Creating a CommentsController
+
+- use generator to generate controller:
+  - `bin/rails generate controller comments`
+  
+##### Writing the create method within CommentsController
+
+- instructions are similar to the `create` method in `articles_controller.rb`
+    - replace `Article` object with `Comment` object
+- **NB:** take note of how to assign the article id to our comment: 
+  
+  ```ruby
+  def create
+    @comment = Comment.new(comment_params)
+    @comment.article_id = params[:article_id]
+
+    @comment.save
+
+    redirect_to article_path(@comment.article)
+  end
+
+  def comment_params
+    params.require(:comment).permit(:author_name, :body)
+  end
+  ```
+##### Adding Comments Count
+
+- just modify the comments header
+  
+##### Adding Form Labels
+
+- change the forms' labels so it makes more contextual sense.
+- update the partial template at `comments/_form.html.erb`
+
+##### Adding Timestamp to comment display
+
+- useful rails helper called `distance_of_time_in_words`
+- add to `_comment.html.erb` the comment view partial
 
 
 ## More Important Takeaways & Reminders
@@ -250,7 +383,7 @@ Creating an HTML form to submit the article, then backend processing to get it i
 
 3. `rake` is for running maintenance-like functions on your application (working with the DB, executing unit tests, deploying to a server, etc).
 
-4. There's a technique called **\*reflection** whereby Rails queries the db, looks at the articles table, and assumes whatever columns that table has that should be the attributes for the model.
+4. There's a technique called **reflection** whereby Rails queries the db, looks at the articles table, and assumes whatever columns that table has that should be the attributes for the model.
 
 5. RESTful model of Web interaction: (REpresentational State Transfer)
 
@@ -273,4 +406,4 @@ Creating an HTML form to submit the article, then backend processing to get it i
 - render partials in other template files like so:
   - `<%= render partial: 'form' %>`
 
-10. Layouts wrap multiple view templates in our application. Layouts can be specific to each controller , but usually we just use one layout that wraps every view template in the application
+10. Layouts wrap multiple view templates in our application. Layouts can be specific to each controller , but usually we just use one layout that wraps every view template in the applicationa
