@@ -825,11 +825,12 @@ A few sources:
 ##### Bundler: Sandboxes of Gems
 
 - we need to mainain the right versions of the right gems on our system, else we'd get a lot of subtle bugs
-- Bundler allows you to define which gems your application depends on (in a file called `Gemfile`) Running `bundle install`  figures out which gem versions work well with each other, and update the solution to `Gemfile.lock`
+- Bundler allows you to define which gems your application depends on (in a file called `Gemfile`) Running `bundle install` figures out which gem versions work well with each other, and update the solution to `Gemfile.lock`
 
 ##### Ruby Load Path
+
 - Ruby has a load path too.
 - this is what the require method uses
-- you can quickly check the default load path of your Ruby 
+- you can quickly check the default load path of your Ruby
   installation like this:
   - `ruby -e 'puts $LOAD_PATH'`
