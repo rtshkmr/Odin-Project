@@ -59,6 +59,16 @@ Doing [This Odin Project task](https://www.theodinproject.com/courses/web-develo
       - [4. An Interface for Tagging Articles](#4-an-interface-for-tagging-articles)
       - [5. Adding Tags to Our Display](#5-adding-tags-to-our-display)
       - [6. Listing Articles by Tag](#6-listing-articles-by-tag)
+  - [Using Gems](#using-gems)
+    - [The paperclip library](#the-paperclip-library)
+      - [1. Using the Gemfile to Setup a RubyGEm](#1-using-the-gemfile-to-setup-a-rubygem)
+      - [2. Setting up The Database for Paperclip](#2-setting-up-the-database-for-paperclip)
+      - [3. Add to the Article Model](#3-add-to-the-article-model)
+      - [4. Modifying the Form Template](#4-modifying-the-form-template)
+      - [5. Improving the Form (seems like latest gem version aldy does this automatically)](#5-improving-the-form-seems-like-latest-gem-version-aldy-does-this-automatically)
+      - [6. Allowing Multiple Image Attachements [HELP I CAN'T DO THIS :(]](#6-allowing-multiple-image-attachements-help-i-cant-do-this)
+      - [7. SASS examples](#7-sass-examples)
+      - [8. Working with Layouts: how to manually set layouts](#8-working-with-layouts-how-to-manually-set-layouts)
   - [More Important Takeaways &amp; Reminders](#more-important-takeaways-amp-reminders)
 
 # Actual README
@@ -507,7 +517,73 @@ Creating an HTML form to submit the article, then backend processing to get it i
 #### 6. Listing Articles by Tag
 
 - the links to the tags should list articles by Tag, so we need to add an action for that, and a corresponding template (justupdate the show template)
-- 
+
+## Using Gems
+
+### The `paperclip` library
+
+Library that manages file attachments and uploading
+
+#### 1. Using the Gemfile to Setup a RubyGEm
+
+- old way: using zip or tar files. but this isn't easy to just upgrade to newer versions
+- now we have Rails plugins as gems.
+- RubyGems is akin to apt or RPM... a package manager
+- Add `gem "paperclip"` to the Gemfile of the project
+- Install `ImageMagick` via apt (ensure it's there)
+- Stop running server, run `bundle` to install the required Gem(s) and the restart the server
+
+#### 2. Setting up The Database for Paperclip
+
+- for now, just say that the article can have **zero or one** image, just for demo sake
+- Add some fields to Article model to hold the uploaded image, rmb to run a migration
+
+  - it's a one-liner: `bin/rails generate migration add_paperclip_fields_to_article`
+
+- udpate the `change` method inside the `_add_paperclip_fields_to_article.rb` file and then run a migration by doing `rake db:migrate`
+
+#### 3. Add to the Article Model
+
+- `has_attached_file` is a method from the paperclip lib. Allows paperclip to understand that the Article model should accept a file attachment and that there are fields to store info about that file which start with `image_`
+- required to include a content_type validation, a file_name validation, or to explicitly state that they’re not going to have either.
+  - if not, you get `MissingRequiredValidatorError` error
+
+- also, deal w **mass assignment** and **strong parameters** by updating the `article_params` method to permit images
+
+
+#### 4. Modifying the Form Template 
+- so we can upload file while editing the article 
+- add the image display to the article show template, update the form partial template:
+   1. Allow the **form** to accept ***multipart*** data. 
+   2. Add a label and a field for file uploading before the save button
+- update the article show view to display the image before the body of the article is placed
+
+#### 5. Improving the Form (seems like latest gem version aldy does this automatically)
+
+- in the form, allow the file_field to indicate whether a file has been updated and if so, which file has been updated
+
+
+#### 6. Allowing Multiple Image Attachements [HELP I CAN'T DO THIS :(]
+
+- a model(here, it's an Article) can have multiple attachements.
+- Create a new model, call it "Attachment" 
+
+
+#### 7. SASS examples
+
+- can just add style sheets and name it `style.css.scss` and Rails will handle the referencing to that sheet thanks to Rails' default layout
+
+#### 8. Working with Layouts: how to manually set layouts
+- in each template, add a reference style like so:
+  - `<%= stylesheet_link_tag 'styles' %>`
+  - this finds the stylesheet with the tag 'styles'
+  - but this is **unnecessarily repetitive** so we look to using layouts
+  
+- see `app/views/layouts/application.html.erb`
+  - Whatever code is in the individual view template gets inserted into the layout where you see the `yield`. Using layouts makes it easy to add site-wide elements like navigation, sidebars, and so forth.
+  - this layout points to `app/assets/stylesheets/application.css` asindicated by the `stylesheet_link_tag` line
+  - 
+
 
 ## More Important Takeaways & Reminders
 
@@ -546,5 +622,8 @@ Creating an HTML form to submit the article, then backend processing to get it i
   - `<%= render partial: 'form' %>`
 
 10. Layouts wrap multiple view templates in our application. Layouts can be specific to each controller , but usually we just use one layout that wraps every view template in the application
-    
-11.  [Referential Integrity](https://en.wikipedia.org/wiki/Referential_integrity) has to be enforced for you to be able to delete tags, kiv [this concept for the future](https://guides.rubyonrails.org/association_basics.html)
+
+11. [Referential Integrity](https://en.wikipedia.org/wiki/Referential_integrity) has to be enforced for you to be able to delete tags, kiv [this concept for the future](https://guides.rubyonrails.org/association_basics.html)
+
+
+12. ***Asset Pipeline*** Principle: a `require_tree` method auto loads all the stylesheets in the current directory, and includes them in `application.css` 
