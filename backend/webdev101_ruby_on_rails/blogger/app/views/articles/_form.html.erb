@@ -4,14 +4,22 @@
     <li><%= error %></li>
   <% end %>
   </ul>
+  <%# Text input for Title %>
   <p>
     <%= f.label :title %><br />
     <%= f.text_field :title %>
   </p>
+  <%# Text input for Body %>
   <p>
     <%= f.label :body %><br />
     <%= f.text_area :body %>
   </p>
+
+  <%# Tagging interface %>
+  <p>
+  <%= f.label :tag_list %><br />
+  <%= f.text_field :tag_list %>
+</p>
   <p>
     <%= f.submit %>
   </p>

@@ -3,10 +3,14 @@ Rails.application.routes.draw do
 
   # set root to articles index
   root to: 'articles#index'
+  
+  # tags to: 'tags#index'
+
 
   resources :articles do
     resources :comments #specifies comments as subresource
   end
+  resources :tags
 end
 
 # Blogger::Application.routes.draw do

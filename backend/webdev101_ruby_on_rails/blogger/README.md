@@ -50,6 +50,15 @@ Doing [This Odin Project task](https://www.theodinproject.com/courses/web-develo
         - [Adding Comments Count](#adding-comments-count)
         - [Adding Form Labels](#adding-form-labels)
         - [Adding Timestamp to comment display](#adding-timestamp-to-comment-display)
+  - [Tagging Features](#tagging-features)
+    - [Steps:](#steps-2)
+      - [1. Understanding the Relationship: database modelling](#1-understanding-the-relationship-database-modelling)
+        - [Options to model the database:](#options-to-model-the-database)
+      - [2. Making Models: Tag and Tagging using Rails model generator](#2-making-models-tag-and-tagging-using-rails-model-generator)
+      - [3. Expressing relationships b/w models by adding relationships to respective models/&lt;model&gt;.rb files](#3-expressing-relationships-bw-models-by-adding-relationships-to-respective-modelsltmodelgtrb-files)
+      - [4. An Interface for Tagging Articles](#4-an-interface-for-tagging-articles)
+      - [5. Adding Tags to Our Display](#5-adding-tags-to-our-display)
+      - [6. Listing Articles by Tag](#6-listing-articles-by-tag)
   - [More Important Takeaways &amp; Reminders](#more-important-takeaways-amp-reminders)
 
 # Actual README
@@ -119,6 +128,8 @@ Things you may want to cover:
 
 - cli console to interact w the webapp
 - can do bulk modifications, searches and other data operations
+- rmb to enter the development environment by running
+  - `bin/rails console` in the project's working directory
 
 #### 7. Setting up the Router
 
@@ -321,26 +332,26 @@ Creating an HTML form to submit the article, then backend processing to get it i
 
 - we want to create a blank comment object within the `show` method for the reflection to happen (?)
 - use `Comment.new` instead of `@article.comments.new`. If not, you'll have an extra comment created. That is due to the fact that `@article.comments.new` has added the new `Comment` to the in-memory collection for the `Article`. Don’t forget to change this back.
-- ***The `Comment` object inside that `show` method has to be manually assigned with the `id` of the `Article`, thanks to Rails’ mass-assignment protection.***
-
+- **_The `Comment` object inside that `show` method has to be manually assigned with the `id` of the `Article`, thanks to Rails’ mass-assignment protection._**
 
 ##### Improving the Partial Comment form template
- 
+
 ##### Updating the Router to create the necessary paths
 
 - the `form_for` helper is trying to build the form and then submit it to `articles_comments_path` but for this path to exist, you have to provide the router this path, so config it at `config/routes.rb`
-  
+
 ##### Creating a CommentsController
 
 - use generator to generate controller:
+
   - `bin/rails generate controller comments`
-  
+
 ##### Writing the create method within CommentsController
 
 - instructions are similar to the `create` method in `articles_controller.rb`
-    - replace `Article` object with `Comment` object
-- **NB:** take note of how to assign the article id to our comment: 
-  
+  - replace `Article` object with `Comment` object
+- **NB:** take note of how to assign the article id to our comment:
+
   ```ruby
   def create
     @comment = Comment.new(comment_params)
@@ -355,10 +366,11 @@ Creating an HTML form to submit the article, then backend processing to get it i
     params.require(:comment).permit(:author_name, :body)
   end
   ```
+
 ##### Adding Comments Count
 
 - just modify the comments header
-  
+
 ##### Adding Form Labels
 
 - change the forms' labels so it makes more contextual sense.
@@ -369,6 +381,133 @@ Creating an HTML form to submit the article, then backend processing to get it i
 - useful rails helper called `distance_of_time_in_words`
 - add to `_comment.html.erb` the comment view partial
 
+## Tagging Features
+
+- tagging for organisation and navigation
+- think: how to relate to the Article model?
+
+### Steps:
+
+#### 1. Understanding the Relationship: database modelling
+
+- A tag must have a relationship to an article so they can be connected
+- consider both models: tags and articles. they have a **_many-to-many relationship_**
+- In SQL database, we would put the foreign key (`article_id`) inside the `tags` table
+  - then, a Tag would "belong" to an Article.
+  - but then a Tag can connect to many articles, not just one.
+- **_SO, just `articles` and `tags` tables are not enough to model this relationship_**
+
+##### Options to model the database:
+
+1. having a **_"join table"_** called `articles_tags`
+
+   - Article model would have a `has_and_belongs_to_many` r/s w Tags
+
+   - Tag model would have a `has_and_belongs_to_many` r/s w Articles
+
+2. The connection b/w the two models has a value of its own, so make it a real model:
+
+- model called `Tagging` (the connection b/w Tags and Articles)
+- an Article `has_many` Taggings
+- a Tag `has_many` Taggings
+- a Tagging `belongs_to` and Article and `belongs_to` a Tag
+
+#### 2. Making Models: `Tag` and `Tagging` using Rails model generator
+
+- field for Tag: `name`
+- fields for Tagging: the types of the field are `references`
+  - `tag_id`: Integer holding the **foreign key** of the referenced Tag
+  - `article_id`: Integer holding the **foreign key** of the referenced Article
+- rmb to migrate dbs after creating models
+
+#### 3. Expressing relationships b/w models by adding relationships to respective `models/<model>.rb` files
+
+- now an Article has a list of tags through the relationship of taggings.
+  - in Rails, we **express** this "has many" relationship though an existing "has many" relationship. Update models to expresss that relationship **_through_** another "has_many" relationship:
+    - `has_many :tags, through: :taggings`
+    - `has_many :articles, through: :taggings`
+- Now if we have an object like article we can just ask for `article.tags` or, conversely, if we have an object named tag we can ask for `tag.articles`.
+
+#### 4. An Interface for Tagging Articles
+
+- update the partial form template such that I can now input tags as comma separated words.
+- then need to add the `tag_list` method to the **Article model**. Note that the method is written in the model's ruby file
+
+- now, the array of tags is an array of Tag instances, so joining the array, Ruby called the `#to_s` method on each of the Tag instances. This gives some hexadecimal output and is _unwanted_. Make sure the `tag_list` method does:
+
+  - converts tag objects to an array of tag names
+  - joins the array of tag names together
+
+    ```ruby
+    def tag_list
+      self.tags.collect do |tag|
+        tag.name
+      end.join(", ")
+    end
+    ```
+
+- **OR**: define a new `Tag#to_s` method:
+
+  ```ruby
+  class Tag < ActiveRecord::Base
+
+    has_many :taggings
+    has_many :articles, through: :taggings
+
+    def to_s
+      name
+    end
+  end
+  ```
+
+- make sure you handle ruby's **strong parameters** properly, else you'll get **_unpermitted parameters_** error
+
+  - update `app/helpers/articles_helper.rb` to fix `article_params` method
+  - now you'll have to update the `create` method in the `ArticlesController` to account for the new attribute of `tag_list`
+
+- Since the `create` method passes all the parameters from the form into the `Article.new` method, the tags are sent in as the string "technology, ruby". The `new` method will try to set the new Article’s `tag_list` equal to `"technology, ruby"` but that method (that `new` method(?)) doesn’t exist because there is no attribute named `tag_list`.
+
+  - Solutions:
+    1. **[easiest solution:]** pretend that there's an attribute called `tag_list`,
+       - define `tag_list=` method inside `article.rb`, without deleting the original `tag_list` method. This is probably a setter method (?)
+
+- now, we didn't create any tags either. We need to associate the article with tags that have the names... pseudocode:
+
+  1: Split the tags_string into an array of strings with leading and trailing whitespace removed (so `"tag1, tag2, tag3"` would become `["tag1","tag2","tag3"]`
+  So first we split the string, and then trim each and every element and collect those updated items.The `downcase` method is to make sure that "ruby" and "Ruby" don’t end up as different tags. Lastly, we want to make sure that each and every tag in the list is unique. `Array#uniq` allows us to remove duplicate items from an array.
+  ruby code to be added to `tag_list=`method: `"programming, Ruby, rails, rails".split(",").collect{|s| s.strip.downcase}.uniq`
+
+  2: For each of those strings…
+
+  2a: Ensure each one of these strings are unique
+
+  2b: Look for a Tag object with that name. If there isn’t one, create it.
+  `tag = Tag.find_or_create_by(name: tag_name)`
+
+  2c: Add the tag object to a list of tags for the article
+
+  3: Set the article’s tags to the list of tags that we have found and/or created.
+  eventual `tag_list=` method:
+
+  ```ruby
+  def tag_list=(tags_string)
+    tag_names = tags_string.split(",").collect{|s| s.strip.downcase}.uniq
+    new_or_found_tags = tag_names.collect { |name| Tag.find_or_create_by(name: name) }
+    self.tags = new_or_found_tags
+  end
+  ```
+
+#### 5. Adding Tags to Our Display
+
+- modify show template to include tags and links to tags
+- we need to let the router know about our Tag object, so you'll have to generate a controller for our Tag object
+  - `bin/rails generate controller tags`
+  - update `config/routes.rb`
+
+#### 6. Listing Articles by Tag
+
+- the links to the tags should list articles by Tag, so we need to add an action for that, and a corresponding template (justupdate the show template)
+- 
 
 ## More Important Takeaways & Reminders
 
@@ -406,4 +545,6 @@ Creating an HTML form to submit the article, then backend processing to get it i
 - render partials in other template files like so:
   - `<%= render partial: 'form' %>`
 
-10. Layouts wrap multiple view templates in our application. Layouts can be specific to each controller , but usually we just use one layout that wraps every view template in the applicationa
+10. Layouts wrap multiple view templates in our application. Layouts can be specific to each controller , but usually we just use one layout that wraps every view template in the application
+    
+11.  [Referential Integrity](https://en.wikipedia.org/wiki/Referential_integrity) has to be enforced for you to be able to delete tags, kiv [this concept for the future](https://guides.rubyonrails.org/association_basics.html)
