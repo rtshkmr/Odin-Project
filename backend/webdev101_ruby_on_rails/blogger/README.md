@@ -714,16 +714,28 @@ common but complicated authentication gems:
 
 13) **Virtual Attributes** in forms
 
+14. **_manage security:_**
 
-14) This filter runs before new and create but I don't know where to put it in its controller
+- **before filters** runs before new and create but I don't know where to put it in its controller
 
-```ruby
-before_filter :zero_authors_or_authenticated, only: [:new, :create]
+  ```ruby
+  before_filter :zero_authors_or_authenticated, only: [:new, :create]
 
-def zero_authors_or_authenticated
-  unless Author.count == 0 || current_user
-    redirect_to root_path
-    return false
+  def zero_authors_or_authenticated
+    unless Author.count == 0 || current_user
+      redirect_to root_path
+      return false
+    end
   end
-end
-```
+  ```
+
+* also, _control which links can be seen_ when like so:
+
+  ```ruby
+  <% if logged_in? %>
+
+    <%= link_to "delete", article_path(@article), method: :delete , data: {confirm: "you sure you want to delete the post bruh??"}%>
+    <%= link_to "edit", edit_article_path(@article) %>
+
+  <% end %>
+  ```
