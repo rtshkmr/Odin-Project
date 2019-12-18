@@ -6,11 +6,18 @@ Rails.application.routes.draw do
   
   # tags to: 'tags#index'
 
+  resources :authors
 
+
+  
   resources :articles do
     resources :comments #specifies comments as subresource
   end
   resources :tags
+    # author sessions: login and logout
+    resources :author_sessions, only: [ :new, :create, :destroy ]
+    get 'login'  => 'author_sessions#new'
+    get 'logout' => 'author_sessions#destroy'
 end
 
 # Blogger::Application.routes.draw do

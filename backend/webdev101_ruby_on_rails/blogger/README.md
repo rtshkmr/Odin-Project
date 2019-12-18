@@ -69,6 +69,13 @@ Doing [This Odin Project task](https://www.theodinproject.com/courses/web-develo
       - [6. Allowing Multiple Image Attachements [HELP I CAN'T DO THIS :(]](#6-allowing-multiple-image-attachements-help-i-cant-do-this)
       - [7. SASS examples](#7-sass-examples)
       - [8. Working with Layouts: how to manually set layouts](#8-working-with-layouts-how-to-manually-set-layouts)
+  - [Implementing Authentication](#implementing-authentication)
+    - [Steps:](#steps-3)
+      - [1. Install by Adding to Gemfile](#1-install-by-adding-to-gemfile)
+      - [2. Running the Generator (automates the model creation and data migration...)](#2-running-the-generator-automates-the-model-creation-and-data-migration)
+      - [3. Creating a First Account](#3-creating-a-first-account)
+      - [4. Logging In](#4-logging-in)
+      - [5. Securing New Users](#5-securing-new-users)
   - [More Important Takeaways &amp; Reminders](#more-important-takeaways-amp-reminders)
 
 # Actual README
@@ -546,44 +553,122 @@ Library that manages file attachments and uploading
 
 - `has_attached_file` is a method from the paperclip lib. Allows paperclip to understand that the Article model should accept a file attachment and that there are fields to store info about that file which start with `image_`
 - required to include a content_type validation, a file_name validation, or to explicitly state that they’re not going to have either.
+
   - if not, you get `MissingRequiredValidatorError` error
 
 - also, deal w **mass assignment** and **strong parameters** by updating the `article_params` method to permit images
 
+#### 4. Modifying the Form Template
 
-#### 4. Modifying the Form Template 
-- so we can upload file while editing the article 
+- so we can upload file while editing the article
 - add the image display to the article show template, update the form partial template:
-   1. Allow the **form** to accept ***multipart*** data. 
-   2. Add a label and a field for file uploading before the save button
+  1.  Allow the **form** to accept **_multipart_** data.
+  2.  Add a label and a field for file uploading before the save button
 - update the article show view to display the image before the body of the article is placed
 
 #### 5. Improving the Form (seems like latest gem version aldy does this automatically)
 
 - in the form, allow the file_field to indicate whether a file has been updated and if so, which file has been updated
 
-
 #### 6. Allowing Multiple Image Attachements [HELP I CAN'T DO THIS :(]
 
 - a model(here, it's an Article) can have multiple attachements.
-- Create a new model, call it "Attachment" 
-
+- Create a new model, call it "Attachment"
 
 #### 7. SASS examples
 
 - can just add style sheets and name it `style.css.scss` and Rails will handle the referencing to that sheet thanks to Rails' default layout
 
 #### 8. Working with Layouts: how to manually set layouts
+
 - in each template, add a reference style like so:
+
   - `<%= stylesheet_link_tag 'styles' %>`
   - this finds the stylesheet with the tag 'styles'
   - but this is **unnecessarily repetitive** so we look to using layouts
-  
+
 - see `app/views/layouts/application.html.erb`
   - Whatever code is in the individual view template gets inserted into the layout where you see the `yield`. Using layouts makes it easy to add site-wide elements like navigation, sidebars, and so forth.
   - this layout points to `app/assets/stylesheets/application.css` asindicated by the `stylesheet_link_tag` line
-  - 
 
+## Implementing Authentication
+
+### Steps:
+
+common but complicated authentication gems:
+
+- [Authlogic](https://github.com/binarylogic/authlogic/)
+- [Merchant (with tutorial)](http://tutorials.jumpstartlab.com/projects/merchant.html)
+- [Devise](https://github.com/plataformatec/devise)
+- [Sorcery: lightweight and easy to use gem](https://github.com/NoamB/sorcery)
+
+#### 1. Install by Adding to Gemfile
+
+- rmb to restart Rails server each time you update the Gemfile
+- use `rails generate` to check which and if all gems installed properly
+
+#### 2. Running the Generator (automates the model creation and data migration...)
+
+- the plugin gives a generator that creates a model that represents our user and the required data migrations to support authentication
+- just run the default generator:
+  - `bin/rails generate sorcery:install --model=Author`
+  - revise the SourceryCore migration that the generator has created, add/remove fields that you need in the database here
+  - then do the database migration migration: `bin/rake db:migrate`
+
+#### 3. Creating a First Account
+
+- we could choose to use the console and create users and test the workflow, but noooo
+- create and test our form-based workflow by creating a user through it
+- we need to add CRUD support for our Author model!
+  **_To this, instead of doing it manually, allow rails to generate the scaffolds_** :
+  `bin/rails generate scaffold_controller Author username:string email:string password:password password_confirmation:password`
+
+  - used scaffold_controller because Sorcery aldy defined for us an author model
+
+  - rails has two scaffolds generators:
+
+    - `scaffold`: generates the model, controller and views
+    - `scaffold_controller`:generate the controller and views
+
+  - scaffold generator didn't know that we want our password field and password confirmation field to use a password text entry, so we have to
+    update `authors/_form.html.erb` and change the field type
+
+  - allow for checking for password and password confirmation fields in that form. Add the `validates_confirmation_of` method call to the Author model itself
+  - note that `password` and `password_confirmation` fields are **virtual attributes**. Sorcery uses given password along with the auto generated `salt` value to create and store the `crypted_password`
+
+  - need to update `routes.rb` to add a resource for our Authors
+  - remove hash and salt from author view > show and index templates
+
+  - add footer to `app/views/layouts/application.html.erb` so that there's a login status at the footer
+
+#### 4. Logging In
+
+- need to build the actual endpoints for logging in and out, meaning **controller actions**:
+
+  - **AuthorSessions** controller with these actions:
+    - new
+    - create
+    - destroy
+  - generate controller w rails generator and add the respective methods
+
+- create new view template for the `new` action that will contain the login form
+
+- config the routes to include the author_sessions ressources
+
+- update the `app/views/layouts/application.html.erb` to include login page links in the footer layout
+
+-
+
+#### 5. Securing New Users
+
+- Let’s add in a protection scheme like this to the new users form:
+
+  - If there are zero users in the system, let anyone access the form
+  - If there are more than zero users registered, only users already logged in can access this form
+
+  That way when the app is first setup we can create an account, then new users can only be created by a logged in user.
+
+- `before_filter` method that runs beforethe `new` and `create` actions of `authors_controller.rb`
 
 ## More Important Takeaways & Reminders
 
@@ -625,5 +710,20 @@ Library that manages file attachments and uploading
 
 11. [Referential Integrity](https://en.wikipedia.org/wiki/Referential_integrity) has to be enforced for you to be able to delete tags, kiv [this concept for the future](https://guides.rubyonrails.org/association_basics.html)
 
+12) **_Asset Pipeline_** Principle: a `require_tree` method auto loads all the stylesheets in the current directory, and includes them in `application.css`
 
-12. ***Asset Pipeline*** Principle: a `require_tree` method auto loads all the stylesheets in the current directory, and includes them in `application.css` 
+13) **Virtual Attributes** in forms
+
+
+14) This filter runs before new and create but I don't know where to put it in its controller
+
+```ruby
+before_filter :zero_authors_or_authenticated, only: [:new, :create]
+
+def zero_authors_or_authenticated
+  unless Author.count == 0 || current_user
+    redirect_to root_path
+    return false
+  end
+end
+```
