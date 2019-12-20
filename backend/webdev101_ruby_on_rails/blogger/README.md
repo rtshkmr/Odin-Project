@@ -76,6 +76,11 @@ Doing [This Odin Project task](https://www.theodinproject.com/courses/web-develo
       - [3. Creating a First Account](#3-creating-a-first-account)
       - [4. Logging In](#4-logging-in)
       - [5. Securing New Users](#5-securing-new-users)
+  - [Heroku Deployment](#heroku-deployment)
+    - [Steps:](#steps-4)
+      - [1. Create Heroku Application](#1-create-heroku-application)
+      - [2. Config App by changing Gemfile to prevent sqlite3](#2-config-app-by-changing-gemfile-to-prevent-sqlite3)
+      - [3. Config Root Route](#3-config-root-route)
   - [More Important Takeaways &amp; Reminders](#more-important-takeaways-amp-reminders)
 
 # Actual README
@@ -669,6 +674,36 @@ common but complicated authentication gems:
   That way when the app is first setup we can create an account, then new users can only be created by a logged in user.
 
 - `before_filter` method that runs beforethe `new` and `create` actions of `authors_controller.rb`
+
+
+## Heroku Deployment
+
+### Steps: 
+
+#### 1. Create Heroku Application
+
+- `heroku create` 
+
+#### 2. Config App by changing Gemfile to prevent sqlite3
+
+- delete `gem 'sqlite3'`
+  ``` ruby
+  group :development, :test do
+  gem 'sqlite3'
+  end
+
+  group :production do
+    gem 'pg'
+  end
+  ```
+
+- ofc after Gemfile change, update bundle
+
+#### 3. Config Root Route
+
+- edit `routes.rb` to set our root route if haven't. 
+  - `root 'cars#index'` <--- example of what the root route should point at
+
 
 ## More Important Takeaways & Reminders
 
