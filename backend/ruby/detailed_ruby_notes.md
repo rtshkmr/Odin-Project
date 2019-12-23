@@ -2,6 +2,7 @@
 
 - [RUBY STYLEGUIDE](https://github.com/rubocop-hq/ruby-style-guide)
 - [TODO: watch this 40 min vid on OOP concepts](https://vimeo.com/91672848)
+- [Standard, Useful Ruby Libraries](http://rubydoc.info/stdlib)
 
 - I'm spending too long on writing notes, so this time I'll not be doing any explanations. Will spam links and write short phrases that hopefully are succinct.
 - **_none of the additional resources/ majority of the tutorials aren't exactly done properly. do again if the need arises_**
@@ -12,12 +13,18 @@
 - OOP concepts
 - I chose to follow the longer path instead of zooming through. Should be done in 5 days or so I hope
 
+### TODOS:
+ 
+- [TODO: watch this 40 min vid on OOP concepts](https://vimeo.com/91672848)
+- Encountered errors following this [ruby File IO, letter generation using ERB tutorial](https://www.theodinproject.com/courses/ruby-programming/lessons/event-manager?ref=lnav#pseudocode-for-cleaning-zip-codes), don't want to waste time troubleshooting so i shall postpone. Error occurs even though i'm copy pasting from the tutorial :(
+
 ### Resources:
 
 **_Contents:_**
 
 - [Ruby In Depth](#ruby-in-depth)
     - [Aims:](#aims)
+    - [TODOS:](#todos)
     - [Resources:](#resources)
   - [Ruby Building Blocks](#ruby-building-blocks)
     - [Basic Syntax](#basic-syntax)
@@ -36,6 +43,7 @@
 - [NB: The file handle is automatically closed at the end of the block, so no need to call the close method](#nb-the-file-handle-is-automatically-closed-at-the-end-of-the-block-so-no-need-to-call-the-close-method)
 - [to_yaml method: making a Ruby hash and turning it into a YAML string using modules provided by the standard library](#toyaml-method-making-a-ruby-hash-and-turning-it-into-a-yaml-string-using-modules-provided-by-the-standard-library)
 - [from_yaml: take the string, convert it into a Ruby hash, then use the contents of our hash with the constructor to construct a new instance of Person.](#fromyaml-take-the-string-convert-it-into-a-ruby-hash-then-use-the-contents-of-our-hash-with-the-constructor-to-construct-a-new-instance-of-person)
+  - [EventManager Tutorial](#eventmanager-tutorial)
 
 ## Ruby Building Blocks
 
@@ -876,3 +884,46 @@ nums = strings.map(&:to_i)
 
 
   - ***NB:*** it will fail for an object that has other BasicSerializable objects as instances, see [this link for the workaround](https://www.sitepoint.com/choosing-right-serialization-format/)
+
+
+## EventManager Tutorial
+
+- Our goal is to get in contact with our event attendees. It is not to define a CSV parser. This is often a hard concept to let go of when initially solving a problem with programming. An important rule to abide by while building software is:
+  - **Look for a Solution before Building a Solution**
+
+- ITERATION 1: using the cs library (a parser)
+  - just use the `CSV.open` instead of  `read` or `readlines`. 
+  - `headers:` param can be given, to indicate if there are headers or not
+  - can access row's values using the headers. CSV lib allows us to convert the header names to symbols by adding this param: `header_converters: :symbol` 
+    - all the symbols are lowercase, same char though but lowercase, so header "Zipcode" becomes `:zipcode`
+
+  - still need to do some data handling though, based on the data types of the csv file entries..
+
+- ITERATION 2: CLEANING UP THE DATA
+  - **padding with 0:** zip codes that are 5digits, assume there is a leading 0. If more than 5, truncate to first 5
+    - DO THE PADDING WITH   `.rjust`  
+  - for missing zipcodes, set default as "00000"
+
+  - must be able to handle empty cells/last line which will be nil, so do a nil check
+  - put the logic in a module for good presentation 
+  
+- doing some cleaning up: 
+  - **coercion over questions**: when you make sure all the values will be of the same datatype, so the nil, convert it to a string
+  - realise that you don't need to have a separate case to see how many digits the initial zipcode has
+  - can just refactor the code to include everything as a one-liner
+
+- ITERATION 3: USING GOOGLE API: CIVIC INFORMATION
+    - [Google Civic Information API](https://developers.google.com/civic-information/)
+    - see how to analyse a api url
+    - install the gem for the google-api-client([documentation](https://github.com/googleapis/google-api-ruby-client))
+
+
+  - the steps we need to set up and use the google-api-client gem:
+      1. set the API key
+      2. send query w given criteria
+      3. parse the response for the info we want
+    explore the data using irb
+
+  - rmb to use the ***Exception Class*** to catch bad data (missing info and such)
+
+ - IT SEEMS THE CODE DOESN'T WORK. SKIPPED THIS 
