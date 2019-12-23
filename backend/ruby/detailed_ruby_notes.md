@@ -32,12 +32,10 @@
 - [==&gt; [1, 8, 27]](#gt-1-8-27)
 - [==&gt; [64, 125, 216]](#gt-64-125-216)
 - [==&gt; [1, 2, 3]](#gt-1-2-3)
-      - [Mixins : imitating multiple inheritance](#mixins--imitating-multiple-inheritance)
-    - [Privacy: Private, Public and Protected](#privacy-private-public-and-protected)
-  - [Errors](#errors)
-    - [Exception Handling](#exception-handling)
-  - [Files and Serialization](#files-and-serialization)
-    - [Ruby IO Class](#ruby-io-class)
+- [or use block notation:](#or-use-block-notation)
+- [NB: The file handle is automatically closed at the end of the block, so no need to call the close method](#nb-the-file-handle-is-automatically-closed-at-the-end-of-the-block-so-no-need-to-call-the-close-method)
+- [to_yaml method: making a Ruby hash and turning it into a YAML string using modules provided by the standard library](#toyaml-method-making-a-ruby-hash-and-turning-it-into-a-yaml-string-using-modules-provided-by-the-standard-library)
+- [from_yaml: take the string, convert it into a Ruby hash, then use the contents of our hash with the constructor to construct a new instance of Person.](#fromyaml-take-the-string-convert-it-into-a-ruby-hash-then-use-the-contents-of-our-hash-with-the-constructor-to-construct-a-new-instance-of-person)
 
 ## Ruby Building Blocks
 
@@ -421,7 +419,8 @@ nums = strings.map(&:to_i)
 - put functionality that does not pertain to individual objects. Objects contain state, and if we have a method that does not need to deal with states, then we can just use a class method
 
 - two good times to use class methods:
-  1. ***factory method***: when you're building new instances of a class that have a bunch of known or "preset" features
+
+  1. **_factory method_**: when you're building new instances of a class that have a bunch of known or "preset" features
   2. when you have some sort of utility method that should be identical across all instances and won't need to directly access instance variables.
 
 - **_we *prepend* the method name with `self.`_**
@@ -550,10 +549,10 @@ nums = strings.map(&:to_i)
 - `extend`
   - mixes a module's methods at the **class level**, the class itself can use the methods, as opposed to instances of the class
 
-### ***Privacy:*** Private, Public and Protected
+### **_Privacy:_** Private, Public and Protected
 
 - note that if your class method is private, you can only call it within the class (e.g. by other class methods). When you're calling the variable, you don't need to prepend `self.`
-- You should change the default thought in your head from "everything is accessible, what do I need to hide?" to "everything should be hidden, what do I absolutely need to make externally available?" 
+- You should change the default thought in your head from "everything is accessible, what do I need to hide?" to "everything should be hidden, what do I absolutely need to make externally available?"
 - Protected:
 
   - from inside the class, protected methods are accessible just like public methods. we can call a protected method from within the class, even with self prepended
@@ -585,30 +584,30 @@ nums = strings.map(&:to_i)
 
 ## Errors
 
-###  Exception Handling
+### Exception Handling
 
- - `begin/rescue` block: on code where you anticipate errors
-   - you can run some code if it throws error, and also allows the code to continue on
-    ```ruby
-    a = 10
-    b = "42"
+- `begin/rescue` block: on code where you anticipate errors
 
-    begin
-      a + b
-    rescue
-      puts "Could not add variables a (#{a.class}) and b (#{b.class})"
-    else
-      puts "a + b is #{a + b}"
-    end
-    ```
+  - you can run some code if it throws error, and also allows the code to continue on
 
-- using `retry`: edirects the program back to the begin statement. 
+  ```ruby
+  a = 10
+  b = "42"
 
+  begin
+    a + b
+  rescue
+    puts "Could not add variables a (#{a.class}) and b (#{b.class})"
+  else
+    puts "a + b is #{a + b}"
+  end
+  ```
 
+- using `retry`: edirects the program back to the begin statement.
 
 ## Files and Serialization
 
-- Files: collections of bits and bytes 
+- Files: collections of bits and bytes
 - need to be able to open, read into program, modify, save
 - remember that the files are just a long stream of words/characters/bytes being read in from top to bottom
   - to do more detailed stuff like write to a specific point in a file, need to figure out what position you’re at first, since you may be in the middle of it somewhere.
@@ -622,8 +621,258 @@ nums = strings.map(&:to_i)
 
 ### Ruby IO Class
 
-- `IO` objects wrap IO streams w 
+- `IO` objects wrap IO streams w
   - consts `STDIN`, `STDOUT`, `STDERR` that point to the default streams
   - global vars `$stdin`, `$stdout` `$stderr` point to the consts
     - can overwrite globals to point to deifferent I/O streams
-  - 
+- to create a new IO object, we need a file-descriptor (0, 1 or 2 for stdin stdout stderr or make one)
+- then, we can do reading or writing..
+- finally, close the stream to flush Ruby's buffer and release the file descriptor back to the OS.
+
+  ```ruby
+  fd = IO.new(1) # for choosing the standard IO streams
+  io.puts "hello"
+
+  fd = IO.sysopen("/dev/null",'w+') # if it's some other IO stream w/o file descriptors: fd = IO.sysopen("<filepath>",'<mode>')
+  dev_null = IO.new(fd)
+  dev_null.puts 'hello'
+  dev_null.close
+
+  ````
+
+#### Position
+
+- there's a "cursor" of sorts,
+- can see what line you're in by calling: `<fd>.pos`
+- can check if end of file: `<fd>.eof?`
+- can go back to the beginning of the stream, calling: `<fd>.rewind`
+- if you're aldy at EOF, you'll get IO errors.
+- after writing, rewind first, then you can do the reading, or you'll be at the end of the file and won't be able to read anything
+- any write operations in the middle of the stream will overwrite existing data
+- streams don't get loaded into memory, literally line by line
+- would be expensive to load into memory at all times
+- also, streams can be infinite
+
+#### Subclass: File
+
+- allows read/write w/o having us bothering with file descriptors.
+- gives some convenience methods like size, chmod and path
+  
+- ***basic file creation***:
+   
+  ```ruby
+  somefile = File.open("sample.txt", "w")
+  somefile.puts "Hello file!"
+  somefile.close   
+
+  # or use block notation:
+  # NB: The file handle is automatically closed at the end of the block, so no need to call the close method
+  File.open("sample.txt", "w"){ |somefile| somefile.puts "Hello file!"}
+
+  ```
+
+  - note, using "w" as opening mode will *overwrite the existing contents* of a file, use "a" instead for append
+
+
+- ***basic reading from a file***:
+  - just open using "r" 
+  - everytime you open your current pos is based off of the prev read position
+
+  ``` ruby
+  contents = File.open("sample.txt", "r"){ |file| file.read }
+  puts contents
+  ```
+
+  - for delimited files (e.g. csv), better to read line by line
+  
+    - `readlines` method can draw in all the content and **automatically parse it as an array**, splitting the file contents by the line breaks.
+      - may not be a good idea when you file size is huge (taxes your computer), hence `readline` is more efficient
+
+      ```ruby
+      File.open("sample.txt").readlines.each do |line|
+        puts line
+      end
+      ```
+
+    - `readline` method reads singular line, usually used with an `while` or unless `block`:
+      
+      ```ruby
+      file = File.open("sample.txt", 'r')
+      while !file.eof?
+        line = file.readline
+        puts line
+      end
+      ```
+
+- ***closing a file is important***
+
+
+- see the `Dir` class for more magic
+
+
+#### Subclass: Sockets
+- `TCPSocket`
+- `UDPSocket`
+- `UNIXSocket`
+- `Socket`
+
+#### Subclass: StringIO
+
+- strings behaving like IOs, when we want to pass strings into systems that consume streams
+- `StringIO` **does not** inherit from `IO`
+- e.g of use: we can inject a StringIO instead of reading an actual file from disk
+
+#### Subclass: Tempfile
+- doesn't inherit from IO, implements  `File`'s interface, dealing with temp files
+- can be passsed to any object that consumes IO-like objects
+
+
+### Serialization: Parsing into Strings
+
+- Serialization takes a Ruby object and converts it into a string of bytes and vice versa
+
+#### YAML: YAML aint markup language
+
+- pretty readable when you want to convert from ruby.. see [Testfile here](/serialization_examples/test.yaml)
+- here's how you write the ruby code for serialisation and deserialisation:
+
+  ``` ruby
+  class Person
+    attr_accessor :name, :age, :gender
+
+    def initialize(name, age, gender)
+      @name = name
+      @age = age
+      @gender = gender
+    end
+  # to_yaml method: making a Ruby hash and turning it into a YAML string using modules provided by the standard library
+    def to_yaml
+      YAML.dump ({
+        :name => @name,
+        :age => @age,
+        :gender => @gender
+      })
+    end
+  # from_yaml: take the string, convert it into a Ruby hash, then use the contents of our hash with the constructor to construct a new instance of Person.
+    def self.from_yaml(string)
+      data = YAML.load string
+      p data
+      self.new(data[:name], data[:age], data[:gender])
+    end
+    # literally the same, except for the use of JSON, instead of YAML
+    def to_json
+        JSON.dump ({
+        :name => @name,
+        :age => @age,
+        :gender => @gender
+        })
+    end
+
+    def self.from_json(string)
+        data = JSON.load string
+        self.new(data['name'], data['age'], data['gender'])
+    end
+
+
+
+    # MessagePack!
+    def to_msgpack
+    MessagePack.dump ({
+        :name => @name,
+        :age => @age,
+        :gender => @gender
+      })
+    end
+
+    def self.from_msgpack(string)
+      data = MessagePack.load string
+      self.new(data['name'], data['age'], data['gender'])
+    end
+    
+    p = Person.new "David", 28, "male"
+    p p.to_yaml
+
+    p = Person.from_yaml(p.to_yaml)
+    puts "Name #{p.name}"
+    puts "Age #{p.age}"
+    puts "Gender #{p.gender}"
+  end
+  ````
+
+#### JSON: Javascript Object Notation
+
+- just draws its roots from JavaScript.
+- The syntax for JSON is nearly the same as the syntax for defining Javascript objects (which are somewhat analogous to Ruby hashes)
+  (see code block above)
+
+- Json syntax is sim to Ruby and Javascript, so it's easy to just use that
+- pretty much used everywhere in browsers
+- doesn't need an extra library, like YAML does
+- If primary objective ofr a serialization method is to communicate w Javascript, look at JSON first
+
+#### MessagePack: binary format, space saving and fast
+
+- need to install hte msgpack gem first
+
+#### Modularize w Mixins
+
+- similar serialization/unserialization methods, so just create mixin:
+
+  ```ruby
+  require 'json'
+
+  #mixin
+  module BasicSerializable
+
+    #should point to a class; change to a different
+    #class (e.g. MessagePack, JSON, YAML) to get a different
+    #serialization
+    @@serializer = JSON
+
+    #================SERIALIZE========================
+    def serialize
+      obj = {}
+
+      # loops ovr instance_variables,
+      #   constructing a Ruby hash of var names and values
+      instance_variables.map do |var|
+        obj[var] = instance_variable_get(var)
+      end
+
+      # use @@serializer to dump out the object
+      #   if no dump method, can just subclass a dump method
+      @@serializer.dump obj
+    end
+
+    #================UNSERIALIZE========================
+
+    # use the serializer to get a Ruby hash out of the string and set the object’s instance variables to the values of the hash
+    def unserialize(string)
+      obj = @@serializer.parse(string)
+      obj.keys.each do |key|
+        instance_variable_set(key, obj[key])
+      end
+    end
+  end
+  ```
+
+  Now, it's easy to implement the `Person` class:
+
+  ```ruby
+  class Person
+  include BasicSerializable
+
+    attr_accessor :name, :age, :gender
+
+    def initialize(name, age, gender)
+      @name = name
+      @age = age
+      @gender = gender
+    end
+  end
+
+  ```
+
+
+
+  - ***NB:*** it will fail for an object that has other BasicSerializable objects as instances, see [this link for the workaround](https://www.sitepoint.com/choosing-right-serialization-format/)
