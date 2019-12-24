@@ -926,4 +926,27 @@ nums = strings.map(&:to_i)
 
   - rmb to use the ***Exception Class*** to catch bad data (missing info and such)
 
- - IT SEEMS THE CODE DOESN'T WORK. SKIPPED THIS 
+  - analyse the output, in this case, make it so that the legislator object doesn't display the *raw* legislator object, we just want to capture the first name and last name of each legislator
+      1. iterate over the collection for a particular zipcode
+      2. each legislator, find the representative's name
+      3. add the name to a new collection of names
+  
+- ITERATION 4: CREATING FORMS USING ERB TEMPLATES
+  - we could have just put a string blob but not nice, so use an ERB template instead
+  - use `File.read` to read the template form 
+  - erb stuff:
+    - `<% %>` : the output of ruby code within this will not be displayed in the form
+    - `<%=  %>`: the output of ruby code will be displayed 
+  - now, our application needs to do the following:
+    - Require the ERB library
+    - create the ERB template from the contents of the template file
+    - simplify the `legislators_by_zipcode` to return the original array of legislators instead of the nice output that we wanted
+
+  - the **`binding`** method:
+    - returns a special object which is an instance of Binding
+    - an instance of binding knows all about the current state of variables and methods within the given scope. 
+
+  - save each form letter to a file. file names have to be unique, so in this case we use unique id, the first column or row number
+      1. assign an ID for attendee
+      2. create output folder
+      3. save each form letter to a file based on the id of the attendee
