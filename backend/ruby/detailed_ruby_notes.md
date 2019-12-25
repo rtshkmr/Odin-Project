@@ -16,7 +16,8 @@
 ### TODOS:
  
 - [TODO: watch this 40 min vid on OOP concepts](https://vimeo.com/91672848)
-- Encountered errors following this [ruby File IO, letter generation using ERB tutorial](https://www.theodinproject.com/courses/ruby-programming/lessons/event-manager?ref=lnav#pseudocode-for-cleaning-zip-codes), don't want to waste time troubleshooting so i shall postpone. Error occurs even though i'm copy pasting from the tutorial :(
+- Skipped the [hangman tutorial for FileIO and serialisation](https://www.theodinproject.com/courses/ruby-programming/lessons/file-i-o-and-serialization?ref=lnav#assignment)
+- 
 
 ### Resources:
 

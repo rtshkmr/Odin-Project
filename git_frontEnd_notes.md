@@ -1,8 +1,13 @@
 # Front End Notes: Git + HTML/CSS/JS
 
 - [Front End Notes: Git + HTML/CSS/JS](#front-end-notes-git--htmlcssjs)
+  - [TODO](#todo)
   - [BASIC SETUP:](#basic-setup)
   - [LEARNING ABOUT GIT:](#learning-about-git)
+  - [In-depth GIT](#in-depth-git)
+    - [Best Practices](#best-practices)
+    - [Terminology](#terminology)
+    - [](#)
   - [FRONT END BASICS:](#front-end-basics)
     - [HTML:](#html)
     - [HTML:](#html-1)
@@ -14,6 +19,13 @@
     - [JavaScript:](#javascript)
 
 ---
+
+
+
+## TODO
+
+1. [useful book about git](http://think-like-a-git.net/sections/about-this-site/who-this-site-is-for.html)
+
 
 Mon Dec 9 11:15:07 +08 2019
 
@@ -76,6 +88,28 @@ Mon Dec 9 15:15:20 +08 2019
 - Origin is the placeholder name for the URL of the remote repository. Can use Origin to access
   the remote repository without having to enter a full URL each time. Hence, we can have multiple remotes
   for a repository by giving each a unique name
+
+## [In-depth GIT](https://www.theodinproject.com/courses/ruby-programming/lessons/using-git-in-the-real-world?ref=lnav)
+
+- [useful book about git](http://think-like-a-git.net/sections/about-this-site/who-this-site-is-for.html)
+
+
+### [Best Practices](https://sethrobertson.github.io/GitBestPractices/)
+
+- keep commits modular and specific
+- Your commit message should fully describe (in present tense) what the commit includes
+- write down on pen and paper on the approaches and fixes you want to do. Helps prioritize problems
+  
+
+### Terminology
+
+- `upstream`: the original Github repo
+- `origin`: my fork of that repo
+- my local clone of the `origin`. local can only pull from upstream, and not push
+
+
+### 
+
 
 ## FRONT END BASICS:
 
