@@ -1,6 +1,6 @@
 class AuthorsController < ApplicationController
   before_action :set_author, only: [:show, :edit, :update, :destroy]
-  before_filter :require_login, except: [:new, :create]
+  # before_filter :require_login, except: [:new, :create]
 
 
   # GET /authors
@@ -76,7 +76,7 @@ class AuthorsController < ApplicationController
       params.require(:author).permit(:username, :email, :password, :password_confirmation)
     end
 
-    before_filter :zero_authors_or_authenticated, only: [:new, :create]
+    # before_filter :zero_authors_or_authenticated, only: [:new, :create]
 
     def zero_authors_or_authenticated
       unless Author.count == 0 || current_user

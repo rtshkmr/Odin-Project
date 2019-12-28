@@ -18,7 +18,7 @@ Doing [This Odin Project task](https://www.theodinproject.com/courses/web-develo
       - [4. Creating the Article Model](#4-creating-the-article-model)
       - [5. Working w the database](#5-working-w-the-database)
       - [6. working with a model in the console](#6-working-with-a-model-in-the-console)
-      - [7. Setting up the Router](#7-setting-up-the-router)
+      o [7. Setting up the Router](#7-setting-up-the-router)
       - [8. Creating the Object's Controller](#8-creating-the-objects-controller)
       - [9. Defining the Index Action](#9-defining-the-index-action)
       - [10. Creating the template](#10-creating-the-template)
