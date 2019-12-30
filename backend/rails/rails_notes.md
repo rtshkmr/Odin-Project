@@ -21,6 +21,8 @@
     - [Heroku Domains and Naming](#heroku-domains-and-naming)
     - [Addons](#addons)
   - [Warmup Project: RestClient](#warmup-project-restclient)
+  - [skipped the testing stuff, no time :( will get back to it when i finally get stuck and can't do anything elsewhere](#skipped-the-testing-stuff-no-time--will-get-back-to-it-when-i-finally-get-stuck-and-cant-do-anything-elsewhere)
+  - [Hartl ROR Tutorial Chapter 3: Static Pages](#hartl-ror-tutorial-chapter-3-static-pages)
 
 I really am behind schedule and may not have enough time. Just gonnna put links here instead.
 
@@ -303,3 +305,20 @@ Sytatic vs dynamic urls:
 
 
 ## [Warmup Project: RestClient](https://www.theodinproject.com/courses/ruby-on-rails/lessons/let-s-get-building?ref=lnav#warmup-restclient)
+
+- [documentation for the gem](https://github.com/rest-client/rest-client)
+
+- gem that helps make HTTP requests; gem can be used to communicate with another web service that doesn’t have an API library already written out for you (which is pretty rare these days) or if you get the inclination to test your own API from the command line.
+
+## ***skipped the testing stuff, no time :( will get back to it when i finally get stuck and can't do anything elsewhere***
+
+
+## [Hartl ROR Tutorial Chapter 3: Static Pages](https://www.learnenough.com/ruby-on-rails-4th-edition-tutorial/static_pages)
+
+
+- aims:
+  - learn how to build static sites 
+  - automated testing and refactoring code
+  - 
+
+
