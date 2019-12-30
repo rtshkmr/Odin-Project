@@ -64,6 +64,10 @@
       - [Asset Tags](#asset-tags)
       - [Forms Helpers](#forms-helpers)
   - [Asset Pipeline](#asset-pipeline)
+    - [Manifest Files](#manifest-files)
+    - [Namespacing is impt](#namespacing-is-impt)
+    - [the raw method used to un-escape HTML code](#the-raw-method-used-to-un-escape-html-code)
+    - [Asset Organisation](#asset-organisation)
   - [Active Record Basics](#active-record-basics)
   - [Forms and Authentication](#forms-and-authentication)
   - [Advanced Forms and Active Record](#advanced-forms-and-active-record)
@@ -75,7 +79,7 @@ Basically, the **Rails Guides** are your gods.
 
 # [Rails Big Picture](https://stackoverflow.com/questions/5205002/summary-of-ruby-on-rails-fundamental-concepts)
 
-![big picture](/img_59bf3a1ac4304-1024x430.png)
+![big picture](img_59bf3a1ac4304-1024x430.png)
 
 - naming convention
 
@@ -774,6 +778,31 @@ end
 
 
 ## Asset Pipeline
+
+- additional files called by the browser
+- basically anything that requires and additional request to grab it
+- reduce the number of requests that a browser makes to render a web page
+- Rails will flatten everything out and mash all your asset files together into one big one for each filetype (called “concatenation”) and the **process** is called Asset Pipeline.
+  - all the asset files are stacked into one file, then "uglified"/"minified" for shipping to the browser as one single file. Different asset type is different file (e.g. CSS, JS..)
+
+### Manifest Files
+
+- determine which files to include in the asset glob
+- `require_tree` helper ust grabs everything in the current directory and used within the manifest files
+  - JS manifest file: `app/assets/javascripts/application.js` lines starting with `//=` tell Rails which files to go find and include...
+  - Stylesheet manifest file: `app/assets/stylesheets/application.css.scss` 
+- sometimes using a new gem requires us to manually add he new bootstrap stylesheets and javascripts to the manifest files to make sure your application actually includes them in the final output. 
+- Here's where **Asset Tags** are important for your application layout
+
+### Namespacing is impt 
+
+### the `raw` method used to un-escape HTML code
+
+### Asset Organisation
+
+- `app/assets` is for assets that are owned by the application, such as custom images, JavaScript files, or stylesheets.
+- `lib/assets` is for your own libraries' code that doesn't really fit into the scope of the application or those libraries which are shared across applications.
+- `vendor/assets` is for assets that are owned by outside entities, such as code for JavaScript plugins and CSS frameworks. Keep in mind that third party code with references to other files also processed by the asset Pipeline (images, stylesheets, etc.), will need to be rewritten to use helpers like asset_path.
 
 ## Active Record Basics
 
