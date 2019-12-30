@@ -68,6 +68,10 @@
     - [Namespacing is impt](#namespacing-is-impt)
     - [the raw method used to un-escape HTML code](#the-raw-method-used-to-un-escape-html-code)
     - [Asset Organisation](#asset-organisation)
+    - [The rest-tester example](#the-rest-tester-example)
+    - [Rails Tutorial Chapter 5: Bootstrapping Stylesheets into the Layouts](#rails-tutorial-chapter-5-bootstrapping-stylesheets-into-the-layouts)
+  - [Bootstrapping and Custom CSS (ref to the sample app)](#bootstrapping-and-custom-css-ref-to-the-sample-app)
+    - [SASS](#sass)
   - [Active Record Basics](#active-record-basics)
   - [Forms and Authentication](#forms-and-authentication)
   - [Advanced Forms and Active Record](#advanced-forms-and-active-record)
@@ -363,6 +367,8 @@ Sytatic vs dynamic urls:
 
 
 ## [Hartl ROR Tutorial Chapter 3: Static Pages](https://www.learnenough.com/ruby-on-rails-4th-edition-tutorial/static_pages)
+
+- see this [subdir](/sample_app/README.md)
 
 
 - aims:
@@ -803,6 +809,178 @@ end
 - `app/assets` is for assets that are owned by the application, such as custom images, JavaScript files, or stylesheets.
 - `lib/assets` is for your own libraries' code that doesn't really fit into the scope of the application or those libraries which are shared across applications.
 - `vendor/assets` is for assets that are owned by outside entities, such as code for JavaScript plugins and CSS frameworks. Keep in mind that third party code with references to other files also processed by the asset Pipeline (images, stylesheets, etc.), will need to be rewritten to use helpers like asset_path.
+
+
+### The rest-tester example
+
+- learning how to test for HTTP request handling using RestClient
+- see the subdir's [README](rest_tester/README.md)
+
+
+### [Rails Tutorial Chapter 5: Bootstrapping Stylesheets into the Layouts](https://www.learnenough.com/ruby-on-rails-4th-edition-tutorial/filling_in_the_layout)
+
+- ref to the toyapp?
+- ***wireframes***: mockups of what webpages will eventually look like
+- tests are ***integration tests***
+- 
+## Bootstrapping and Custom CSS (ref to the sample app)
+
+- the html classes are special for bootstrap
+- using Bootstrap makes the app design automatically responsive (various screen types/sizes)
+0. Use stubs `#` as placeholders for href links
+1. add `bootstrap-sass `gem to the Gemfile
+2. for ease, put all the css needed in a single file, create a custom css file like so: `touch app/assets/stylesheets/custom.scss`. Then add these import statements and relevant custom css rules:
+  
+   ```css
+    @import "bootstrap-sprockets";
+    @import "bootstrap";
+   ```
+
+
+   rules:
+
+   ```css
+    /* universal */
+
+    body {
+        padding-top: 60px;
+    }
+
+    section {
+        overflow: auto;
+    }
+
+    textarea {
+        resize: vertical;
+    }
+
+    .center {
+        text-align: center;
+    }
+
+    .center h1 {
+        margin-bottom: 10px;
+    }
+
+
+    /* typography */
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+        line-height: 1;
+    }
+
+    h1 {
+        font-size: 3em;
+        letter-spacing: -2px;
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+    h2 {
+        font-size: 1.2em;
+        letter-spacing: -1px;
+        margin-bottom: 30px;
+        text-align: center;
+        font-weight: normal;
+        color: #777;
+    }
+
+    p {
+        font-size: 1.1em;
+        line-height: 1.7em;
+    }
+
+
+    /* header */
+
+    #logo {
+        float: left;
+        margin-right: 10px;
+        font-size: 1.7em;
+        color: #fff;
+        text-transform: uppercase;
+        letter-spacing: -1px;
+        padding-top: 9px;
+        font-weight: bold;
+    }
+
+    #logo:hover {
+        color: #fff;
+        text-decoration: none;
+    }
+
+
+   ```
+
+3. make custom changes to custom.scss as above
+4. TO declutter the main layout, use partials instead
+  - partials named with an opening underscore: `app/views/layouts/_shim.html.erb`
+  - move the HTML shim and the header into respective partials and call render to render those partials
+5. Replace stubs via named routes, to add named routes, go to `config/routes.rb`. Example: `get  '/help', to: 'static_pages#help'`.
+    In so doing, you have to update the controller test file to reflect the named method, so e.g.` get root_path` has to be added to the testfile in place of the old url..
+6. Implement layout link tests to test things ????? 
+
+### SASS 
+
+- two of the most important improvements that SASS makes to CSS:
+    1. Nesting (of rules)
+    
+
+    ```css
+    .center {
+        text-align: center;
+        h1 {
+          margin-bottom: 10px;
+        }
+    }
+    #logo {
+      float: left;
+      margin-right: 10px;
+      font-size: 1.7em;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: -1px;
+      padding-top: 9px;
+      font-weight: bold;
+      &:hover {
+        color: #fff;
+        text-decoration: none;
+      }
+    }
+    ```
+
+    note the use of `&`. Sass changes `&:hover` into `#logo:hover` as part of converting from SCSS to CSS.
+    2. Variables (setting them)
+    
+    ```css
+    $light-gray: #777;
+    .
+    .
+    .
+    h2 {
+      .
+      .
+      .
+      color: $light-gray;
+    }
+    .
+    .
+    .
+    footer {
+      .
+      .
+      .
+      color: $light-gray;
+    }
+    ```
+
+
+- 
 
 ## Active Record Basics
 
