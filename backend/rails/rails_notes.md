@@ -72,7 +72,17 @@
     - [Rails Tutorial Chapter 5: Bootstrapping Stylesheets into the Layouts](#rails-tutorial-chapter-5-bootstrapping-stylesheets-into-the-layouts)
   - [Bootstrapping and Custom CSS (ref to the sample app)](#bootstrapping-and-custom-css-ref-to-the-sample-app)
     - [SASS](#sass)
-  - [Active Record Basics](#active-record-basics)
+  - [Active Record Basics: basically, working with models](#active-record-basics-basically-working-with-models)
+    - [Active Record as an ORM Framework](#active-record-as-an-orm-framework)
+    - [Conventions, follow them or cry yourself to death](#conventions-follow-them-or-cry-yourself-to-death)
+      - [Naming:](#naming)
+      - [Schema Conventions:](#schema-conventions)
+    - [CRUD actions thanks to ActiveRecord](#crud-actions-thanks-to-activerecord)
+    - [Migrations](#migrations)
+    - [What is a migration?](#what-is-a-migration)
+    - [Validations: never trust your users](#validations-never-trust-your-users)
+      - [](#)
+    - [Associations](#associations)
   - [Forms and Authentication](#forms-and-authentication)
   - [Advanced Forms and Active Record](#advanced-forms-and-active-record)
   - [API, Mailers and Advanced Topics](#api-mailers-and-advanced-topics)
@@ -982,7 +992,93 @@ end
 
 - 
 
-## Active Record Basics
+## Active Record Basics: basically, working with models
+
+- setting up your data model properly is probably the most important 
+- Active Record is the interface that Rails gives you between the database and your application
+- out of the various Ruby gems that form up Rails, Active Record takes care of the database stuff, is known as an "ORM"
+
+***Object-Relational-Mapping*** : you write in Ruby, Rails handles all the database stuff. Even b/w database types, as long as `config/database.yml` is written out properly. 
+
+
+### Active Record as an ORM Framework
+
+- Represent models and their data.
+- Represent associations between these models.
+- Represent inheritance hierarchies through related models.
+- Validate models before they get persisted to the database.
+- Perform database operations in an object-oriented fashion.
+
+### Conventions, follow them or cry yourself to death
+
+#### Naming: 
+
+- ***CamelCased*** class `BookClub` has database table called `book_clubs` (snake_case)
+
+#### Schema Conventions:
+
+- FK is `singularized_table_name_id`
+- PK is an int of some sort
+
+
+### [CRUD actions thanks to ActiveRecord](https://guides.rubyonrails.org/active_record_basics.html#crud-reading-and-writing-data)
+
+- Create 
+
+- Read. See the [ActiveRecord Query Interface](https://guides.rubyonrails.org/active_record_querying.html)
+
+- Update
+
+- Destroy
+### Migrations
+
+- can think of migrations as being a "new version" of the db. 
+
+- doing things manually, the steps are something like:
+  1. create new rails proj
+  2. set up db, create db first
+  3. create model file for a model
+  4. create a database table for that model by modifying the migration file and then running a migration
+  
+  but ofc we use rails magic: `$ rails generate model YourModelNameHere`
+
+
+### What is a migration?
+
+-  a script that tells Rails how you want to set up or change a database.
+-  just specify the correct Ruby method (like the aptly named create_table) and its parameters and you’re almost good to go
+-  the script is run using : `$ rails db:migrate`
+
+
+- ***reversibility*** you can rollback a migration like so: ` $ rails db:rollback`
+
+### Validations: never trust your users
+
+- to ensure good data is being sent to the db
+- three levels of data validation:
+  - JS code that detects form entries (not that secure though)
+  - Server level, ***Model Validations***: write validation within Rails' model that examines user inputs, checks them against the constraints you set up and catches errors
+  - Database level: only way to truly enforce constraints. e.g. `add_index :users, :username, unique: true`
+
+#### 
+
+
+
+### Associations
+
+- `has_many/belongs_to` association. e.g. a User `has_many` Post objects associated with it and a Post `belongs_to` a single User
+- many_to_many relationships can be called `has_and_belongs_to_many` relationship in Rails terms
+  - requires a join/"through" table
+
+- TODO: [Creating a join Table, having the Tagging model may not be necessary:](https://edgeguides.rubyonrails.org/active_record_migrations.html#creating-a-join-table)
+
+- [column modifiers during generation are useful](https://edgeguides.rubyonrails.org/active_record_migrations.html#column-modifiers)
+
+[Active Record and Referential Integrity](https://edgeguides.rubyonrails.org/active_record_migrations.html#active-record-and-referential-integrity)
+
+
+
+
 
 ## Forms and Authentication
 
